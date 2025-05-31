@@ -1,0 +1,333 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    background-image: url(../assets/images/imagen3.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+main{
+    width: 100%;
+    padding: 20px;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.contenedor__todo{
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    position: relative;
+}
+
+.caja__trasera{
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 128, 255, 0.5);
+
+}
+
+
+.custom-btn {
+  background-color: rgba(0, 128, 255, 0.5) !important;
+  border-color: rgba(0, 128, 255, 1) !important; 
+  color: white !important; 
+}
+
+.caja__trasera div{
+    margin: 100px 40px;
+    color: white;
+    transition: all 500ms;
+}
+
+
+.caja__trasera div p,
+.caja__trasera button{
+    margin-top: 30px;
+}
+
+.caja__trasera div h3{
+    font-weight: 400;
+    font-size: 26px;
+}
+
+.caja__trasera div p{
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.caja__principal{
+    width: 100%;
+    height: 200px;
+    padding: 10px 20px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 128, 255, 0.5);
+    
+}
+
+.input_edit_usuario_1,
+.input_edit_usuario_2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre los inputs */
+  flex: 1; /* Para que ocupen el mismo ancho */
+}
+
+
+/* Estilo fuerte usando ID */
+#radios-cliente,
+#radios-proveedor {
+    display: none; /* Ocultamos el input real */
+}
+
+/* Estilo para los labels que siguen a los radios */
+#radios-cliente + label,
+#radios-proveedor + label {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #eee;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Cuando el radio esté seleccionado, resaltamos su label */
+#radios-cliente:checked + label,
+#radios-proveedor:checked + label {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+}
+
+/* Contenedor en fila */
+.contenedor_radios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Para que se adapten si no entra */
+}
+
+/* Responsive: en pantallas pequeñas, apilarlos */
+@media (max-width: 500px) {
+    .contenedor_radios {
+        flex-direction: column;
+    }
+
+    #radios-cliente + label,
+    #radios-proveedor + label {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.texto_seleccion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+
+.contenedor_inputs {
+  display: flex;
+  gap: 20px; /* Espacio entre los dos divs */
+  width: 100%;
+  max-width: 800px; /* O el ancho que quieras */
+  margin: 0 auto; /* Centrar el contenedor */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.marco_perfil{
+    width: 100%;
+    padding: 190px 60px;
+    background: white;
+    position: absolute;
+    border-radius: 20px;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.caja__trasera button {
+    padding: 10px 40px;
+    border: 2px solid #fff;
+    font-size: 14px;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    outline: none;
+    transition: all 300ms;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049; /* Un verde más oscuro al pasar el mouse */
+    transform: scale(1.05); /* Ligero agrandamiento */
+  }
+  
+  button[type="submit"]:active {
+    transform: scale(0.98); /* Pequeño efecto al presionar */
+  }
+  
+
+.caja__trasera button:hover{
+    background: #fff;
+    color: #46A2FD;
+}
+
+/*Formularios*/
+
+.contenedor__login-register{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 380px;
+    position: relative;
+    top: -185px;
+    left: 10px;
+
+    /*La transicion va despues del codigo JS*/
+    transition: left 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+}
+
+
+
+
+.contenedor__login-register form{
+    width: 100%;
+    padding: 80px 20px;
+    background: white;
+    position: absolute;
+    border-radius: 20px;
+}
+
+.contenedor__login-register form h2{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #46A2FD;
+}
+
+.contenedor__login-register form input{
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    background: #F2F2F2;
+    font-size: 16px;
+    outline: none;
+}
+
+.contenedor__login-register form button{
+    padding: 10px 40px;
+    margin-top: 40px;
+    border: none;
+    font-size: 14px;
+    background: #46A2FD;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    outline: none;
+    
+}
+
+
+
+
+.formulario__login{
+    opacity: 1;
+    display: block;
+}
+.formulario__register{
+    display: none;
+}
+
+
+
+@media screen and (max-width: 850px){
+
+    main{
+        margin-top: 50px;
+    }
+
+    .caja__trasera{
+        max-width: 350px;
+        height: 300px;
+        flex-direction: column;
+        margin: auto;
+    }
+
+    .caja__trasera div{
+        margin: 0px;
+        position: absolute;
+    }
+
+
+    /*Formularios*/
+
+    .contenedor__login-register{
+        top: -10px;
+        left: -5px;
+        margin: auto;
+    }
+
+    .contenedor__login-register form{
+        position: relative;
+    }
+}

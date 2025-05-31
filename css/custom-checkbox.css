@@ -1,0 +1,70 @@
+/* custom-checkbox.css */
+
+/* Hide the default checkbox */
+.form-check-input.filtro-cancha {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Style the custom checkbox container */
+.custom-checkbox-label {
+    position: relative;
+    cursor: pointer;
+    padding-left: 30px; /* Space for the custom checkbox */
+    font-size: 1rem;
+    color: #333; /* Darker text color */
+}
+
+/* Create the custom checkbox indicator */
+.custom-checkbox-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff; /* Primary blue border */
+    border-radius: 4px; /* Slightly rounded corners */
+    background-color: #fff; /* White background */
+    transition: all 0.2s ease-in-out;
+}
+
+/* Style the custom checkbox indicator when checked */
+.form-check-input.filtro-cancha:checked + .custom-checkbox-label::before {
+    background-color: #007bff; /* Primary blue background when checked */
+    border-color: #007bff; /* Primary blue border when checked */
+}
+
+/* Create the checkmark (hidden by default) */
+.custom-checkbox-label::after {
+    content: '';
+    position: absolute;
+    left: 7px; /* Position checkmark */
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    opacity: 0; /* Hidden by default */
+    transition: all 0.2s ease-in-out;
+}
+
+/* Show the checkmark when the checkbox is checked */
+.form-check-input.filtro-cancha:checked + .custom-checkbox-label::after {
+    opacity: 1;
+}
+
+/* Hover effect for the label */
+.custom-checkbox-label:hover::before {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Light blue shadow on hover */
+}
+
+/* Focus effect for accessibility */
+.form-check-input.filtro-cancha:focus + .custom-checkbox-label::before {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Stronger blue shadow on focus */
+}
