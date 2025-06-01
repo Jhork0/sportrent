@@ -27,17 +27,18 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ingresar cancha</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Editar datos</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/vercanchasproveedor.php">Ver mis canchas</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver solicitudes</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver reservas activas</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Editar datos</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
  <div class="container mt-3 pt-3">
-  <label class="form-label">Filtrar por tipo de cancha:</label>
+  <label class="form-label ajuste">Filtrar por tipo de cancha:</label>
   <div class="d-flex flex-wrap">
     <div class="form-check mx-2">
       <input type="checkbox" class="form-check-input filtro-cancha" value="Fútbol" id="futbol">
@@ -67,9 +68,9 @@
 </div>
 
 
-    <div>
-    <?php include '../logica/iterarcanchageneral.php'; ?>
-  </div>
+<div>
+  <?php include '../logica/iterarcanchageneral.php'; ?>
+</div>
 
 
 

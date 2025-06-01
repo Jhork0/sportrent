@@ -68,3 +68,86 @@
 .form-check-input.filtro-cancha:focus + .custom-checkbox-label::before {
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Stronger blue shadow on focus */
 }
+
+/* Media query para pantallas con ancho <= 575px */
+@media (max-width: 576px) {
+    .custom-checkbox-label {
+        padding-top: 15px; /* Aumenta el padding superior */
+        padding-bottom: 15px; /* Opcional: para mantener proporción */
+    }
+    
+    /* Ajustamos la posición del checkbox para alinearlo con el nuevo padding */
+    .custom-checkbox-label::before {
+        top: 15px; /* Ajustamos la posición vertical */
+        transform: translateY(0); /* Eliminamos el translateY anterior */
+    }
+    
+    /* Ajustamos la posición del checkmark */
+    .custom-checkbox-label::after {
+        top: 15px; /* Ajustamos la posición vertical */
+        transform: translateY(0) rotate(45deg); /* Eliminamos el translateY anterior */
+    }
+}
+
+
+  body {
+    padding-top: 56px; /* Altura del navbar */
+  }
+  
+  /* Ajustes para pantallas pequeñas (menos de 992px - punto de quiebre de lg en Bootstrap) */
+  @media (max-width: 991.98px) {
+    /* Asegura que el navbar colapsado ocupe todo el ancho */
+    .navbar-collapse {
+      background-color: #343a40; /* Mismo color que el navbar */
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+    
+    /* Espaciado para los items del menú en móvil */
+    .navbar-nav .nav-item {
+      margin-bottom: 8px;
+    }
+    
+    /* Ajusta el formulario de búsqueda en móvil */
+    #searchForm {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    
+    /* Hace que el input de búsqueda ocupe todo el ancho */
+    #searchForm .form-control {
+      width: calc(100% - 90px); /* Resta el ancho del botón */
+    }
+  }
+  
+  /* Ajustes adicionales para pantallas muy pequeñas (menos de 576px) */
+  @media (max-width: 575.98px) {
+    body {
+      padding-top: 70px; /* Más espacio para el navbar que puede ser más alto */
+    }
+    
+    /* Ajusta el tamaño de los textos */
+    .navbar-brand, .nav-link {
+      font-size: 0.9rem;
+    }
+    
+    /* Reduce el padding del contenedor */
+    .navbar > .container {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
+@media (max-width: 576px) {
+    .ajuste{
+        padding-top: 150px;
+    }
+}
+
+@media (max-width: 992px) {
+    .ajuste{
+        padding-top: 150px;
+    }
+}
+

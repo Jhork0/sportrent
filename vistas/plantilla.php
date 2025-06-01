@@ -24,6 +24,8 @@ if ($resultado->num_rows === 0) {
 }
 
 $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
+
+
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +93,12 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
                             <?php echo htmlspecialchars($fila['direccion_cancha'] ?? 'Dirección completa de la cancha, incluyendo ciudad y país.'); ?>
                         </p>
                     </div>
+                </div>
+
+                <div>
+                <?php include '../logica/iterarhoras.php'; ?>
+
+             
                 </div>
 
                 
