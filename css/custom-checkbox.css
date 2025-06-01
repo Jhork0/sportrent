@@ -141,13 +141,13 @@
 
 @media (max-width: 576px) {
     .ajuste{
-        padding-top: 150px;
+        padding-top: 100px;
     }
 }
 
 @media (max-width: 992px) {
     .ajuste{
-        padding-top: 150px;
+        padding-top: 100px;
     }
 }
 

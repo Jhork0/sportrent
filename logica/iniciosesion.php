@@ -42,7 +42,7 @@ if ($stmtCedula->num_rows > 0) {
     if ($stmtUsuario->num_rows > 0) {
         $stmtUsuario->bind_result($id_credencial);
         $stmtUsuario->fetch();
-        $tipo_usuario = 'usuario';
+        $tipo_usuario = 'cliente';
         $redirectUrl = "../vistas/home.php";
     } elseif ($stmtProveedor->num_rows > 0) {
         $stmtProveedor->bind_result($id_credencial);

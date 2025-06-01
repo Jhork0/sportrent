@@ -1,45 +1,76 @@
 <?php
-session_start();
-include 'conectar.php'; // Make sure this path is correct
 
-if(isset($_SESSION['correo_usuario'])) {
+include 'conectar.php'; // Asegúrate de que la ruta sea correcta
+
+if (isset($_SESSION['correo_usuario'])) {
     $correo_recibido = $_SESSION['correo_usuario'];
-} else {
-    // Handle cases where the user might not be logged in or session isn't set
-    $correo_recibido = "Invitado";
 }
 
-// Initialize SQL query
+// Construcción de la consulta SQL
 $sql = "SELECT * FROM cancha";
 $where_clauses = [];
 
-// Check if filter types are sent via GET request (e.g., from AJAX)
+// Filtro por tipo de cancha
 if (isset($_GET['tipos_cancha']) && !empty($_GET['tipos_cancha'])) {
-    $tipos_cancha = $_GET['tipos_cancha']; // This will be a comma-separated string
-    $tipos_array = explode(',', $tipos_cancha); // Convert string to array
-
-    // Sanitize and quote each type for the SQL query
+    $tipos_array = explode(',', $_GET['tipos_cancha']);
     $sanitized_types = array_map(function($type) use ($conn) {
         return "'" . $conn->real_escape_string($type) . "'";
     }, $tipos_array);
-
+    
     if (!empty($sanitized_types)) {
         $where_clauses[] = "tipo_cancha IN (" . implode(',', $sanitized_types) . ")";
     }
 }
 
-// Add WHERE clauses if any filters are applied
-if (!empty($where_clauses)) {
-    $sql .= " WHERE " . implode(' AND ', $where_clauses); // Use AND if you had multiple filter types
+// Filtro por precio mínimo
+if (isset($_GET['precio_min']) && is_numeric($_GET['precio_min'])) {
+    $precio_min = $conn->real_escape_string($_GET['precio_min']);
+    $where_clauses[] = "valor_hora >= $precio_min";
 }
 
-// For debugging, you can uncomment this line to see the generated query
-// echo "SQL Query: " . $sql . "<br>";
+// Filtro por precio máximo
+if (isset($_GET['precio_max']) && is_numeric($_GET['precio_max'])) {
+    $precio_max = $conn->real_escape_string($_GET['precio_max']);
+    $where_clauses[] = "valor_hora <= $precio_max";
+}
+
+// Filtro por horario (mañana o noche)
+if (isset($_GET['horarios']) && !empty($_GET['horarios'])) {
+    $horarios = explode(',', $_GET['horarios']);
+    $horario_conditions = [];
+
+    foreach ($horarios as $horario) {
+        $horario = $conn->real_escape_string($horario);
+        if ($horario === 'manana') {
+            $horario_conditions[] = "(hora_apertura <= '12:00' AND hora_cierre >= '06:00')";
+        } elseif ($horario === 'noche') {
+            $horario_conditions[] = "(hora_apertura <= '23:59' AND hora_cierre >= '18:00')";
+        }
+    }
+
+    if (!empty($horario_conditions)) {
+        $where_clauses[] = '(' . implode(' OR ', $horario_conditions) . ')';
+    }
+}
+
+// Filtro por nombre de búsqueda (si se proporciona)
+if (isset($_GET['busqueda']) && !empty(trim($_GET['busqueda']))) {
+    $busqueda = $conn->real_escape_string(trim($_GET['busqueda']));
+    $where_clauses[] = "nombre_cancha LIKE '%$busqueda%'";
+}
+
+
+
+// Agregar cláusulas WHERE si hay filtros
+if (!empty($where_clauses)) {
+    $sql .= " WHERE " . implode(' AND ', $where_clauses);
+}
+
+// Puedes descomentar esta línea para depuración:
+// echo "SQL Query: " . $sql;
 
 $resultado = $conn->query($sql);
-
 if (!$resultado) {
-    // Handle SQL query error
     echo "Error en la consulta SQL: " . $conn->error;
     exit();
 }
@@ -63,7 +94,7 @@ if (!$resultado) {
                     <div class="card-body">
                         <h4 class="card-title"><?php echo htmlspecialchars($fila['nombre_cancha']); ?></h4>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge badge-primary d-flex justify-content-between align-items-center ">$<?php echo htmlspecialchars($fila['valor_hora']); ?>/hora</span>
+                            <span class="badge badge-primary">$<?php echo htmlspecialchars($fila['valor_hora']); ?>/hora</span>
                             <span class="badge badge-secondary"><?php echo htmlspecialchars($fila['tipo_cancha']); ?></span>
                         </div>
                     </div>
@@ -82,6 +113,5 @@ if (!$resultado) {
 </div>
 
 <?php
-// Cierra la conexión
 $conn->close();
 ?>

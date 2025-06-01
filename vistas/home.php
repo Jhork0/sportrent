@@ -21,7 +21,7 @@
         <input class="form-control mr-sm-2" type="search" 
                placeholder="Buscar" aria-label="Search" name="nombre"
                id="inputSearch" autocomplete="off">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+
       </form>
       
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Editar mis datos</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_cliente.php">Editar mis datos</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver mis solicitudes</a></li>
         </ul>
       </div>
@@ -62,6 +62,37 @@
     <div class="form-check mx-2">
       <input type="checkbox" class="form-check-input filtro-cancha" value="Otra" id="otra">
       <label class="form-check-label custom-checkbox-label" for="otra">Otra</label>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container mt-3 pt-3">
+  <label class="form-label ajuste">Filtrar por horario de apertura:</label>
+  <div class="d-flex flex-wrap">
+    <div class="form-check mx-2">
+      <input type="checkbox" class="form-check-input filtro-horario" value="manana" id="horario-manana">
+      <label class="form-check-label custom-checkbox-label" for="horario-manana">Mañana (6:00 - 12:00)</label>
+    </div>
+    <div class="form-check mx-2">
+      <input type="checkbox" class="form-check-input filtro-horario" value="noche" id="horario-noche">
+      <label class="form-check-label custom-checkbox-label" for="horario-noche">Noche (18:00 - 23:59)</label>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container mt-3 pt-3">
+  <label class="form-label ajuste">Filtrar por precio por hora:</label>
+  <div class="d-flex flex-wrap align-items-center">
+    <div class="form-group mx-2">
+      <input type="number" class="form-control filtro-precio" id="precio-min" placeholder="Precio mínimo">
+    </div>
+    <span class="mx-1">a</span>
+    <div class="form-group mx-2">
+      <input type="number" class="form-control filtro-precio" id="precio-max" placeholder="Precio máximo">
     </div>
   </div>
 </div>

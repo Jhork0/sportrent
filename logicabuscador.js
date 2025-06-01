@@ -1,35 +1,40 @@
-$(document).ready(function() {
-    // Function to load canchas based on selected filters
-    function loadCanchas() {
-        var selectedTypes = [];
-        $('.filtro-cancha:checked').each(function() {
-            selectedTypes.push($(this).val());
-        });
-
-        // Convert the array of selected types to a comma-separated string
-        var typesString = selectedTypes.join(',');
-
-        $.ajax({
-            url: '../logica/iterarcanchageneral.php', // Path to your PHP file
-            type: 'GET',
-            data: { tipos_cancha: typesString }, // Send selected types as a GET parameter
-            success: function(response) {
-                // Update only the canchas container
-                $('#canchas-container').html($(response).find('#canchas-container').html());
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + status + error);
-                // Optionally display an error message to the user
-                $('#canchas-container').html("<p>Error al cargar las canchas. Intenta de nuevo más tarde.</p>");
-            }
-        });
-    }
-
-    // Attach change event listener to all checkboxes with class 'filtro-cancha'
-    $('.filtro-cancha').on('change', function() {
-        loadCanchas(); // Reload canchas when a checkbox changes
+function loadCanchas() {
+    var selectedTypes = [];
+    $('.filtro-cancha:checked').each(function() {
+        selectedTypes.push($(this).val());
     });
 
-    // Initial load of canchas when the page loads (optional, if you want to apply default filters or just load all initially)
-    // loadCanchas();
+    var selectedHorarios = [];
+    $('.filtro-horario:checked').each(function() {
+        selectedHorarios.push($(this).val());
+    });
+
+    var precioMin = $('#precio-min').val();
+    var precioMax = $('#precio-max').val();
+
+    var busqueda = $('#inputSearch').val(); // corregido aquí
+
+    $.ajax({
+        url: '../logica/iterarcanchageneral.php',
+        type: 'GET',
+        data: {
+            tipos_cancha: selectedTypes.join(','),
+            horarios: selectedHorarios.join(','),
+            precio_min: precioMin,
+            precio_max: precioMax,
+            busqueda: busqueda
+        },
+        success: function(response) {
+            $('#canchas-container').html($(response).find('#canchas-container').html());
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error: " + status + error);
+            $('#canchas-container').html("<p>Error al cargar las canchas.</p>");
+        }
+    });
+}
+
+// Ejecutar al cambiar cualquier filtro o al escribir en el buscador
+$('.filtro-cancha, .filtro-horario, #precio-min, #precio-max, #inputSearch').on('input change', function() {
+    loadCanchas();
 });
