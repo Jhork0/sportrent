@@ -77,9 +77,3 @@ function validaNumericos(){
   
 }
 
-
-const precioInput = document.getElementById('precio-hora');
-
-    precioInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, ''); // Reemplaza todo lo que no sea dígito
-    });

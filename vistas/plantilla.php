@@ -95,6 +95,9 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
                     </div>
                 </div>
 
+             
+
+              
                 <div>
                 <?php include '../logica/iterarhoras.php'; ?>
 
@@ -111,6 +114,8 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
             <p>&copy; 2025 SportRent. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script src="../logicacalendario.js"></script>
 
 </body>
 </html>

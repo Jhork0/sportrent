@@ -36,6 +36,7 @@
                         <input type="text" placeholder="Correo Electronico" name="correoi">
                         <input type="password" placeholder="Contraseña" name="passwordi">
                         <button>Entrar</button>
+                        <a class="forgot" href="./vistas/recuperar_contraseña.php">¿Olvidaste tu contraseña?</a>
                     </form>
 
                     <!--Register-->
