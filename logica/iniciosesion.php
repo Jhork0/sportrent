@@ -44,18 +44,22 @@ if ($stmtCedula->num_rows > 0) {
         $stmtUsuario->fetch();
         $tipo_usuario = 'cliente';
         $redirectUrl = "../vistas/home.php";
+        $_SESSION['correo_usuario'] = $correo;
+        $_SESSION['tipo_usuario'] = $tipo_usuario;
     } elseif ($stmtProveedor->num_rows > 0) {
         $stmtProveedor->bind_result($id_credencial);
         $stmtProveedor->fetch();
         $tipo_usuario = 'proveedor';
         $redirectUrl = "../vistas/proveedor.php";
+        $_SESSION['correo_usuario'] = $correo;
+        $_SESSION['tipo_usuario'] = $tipo_usuario;
     } else {
         echo "<script>alert('El usuario no tiene perfil asignado.'); window.history.back();</script>";
         exit();
     }
 
-    $_SESSION['correo_usuario'] = $correo;
-    $_SESSION['tipo_usuario'] = $tipo_usuario;
+    
+    
 
     // Paso 3: Validar contraseña
     $sqlCred = "SELECT contraseña FROM credencial WHERE id_credencial = ?";
@@ -81,6 +85,9 @@ if ($stmtCedula->num_rows > 0) {
     echo "<script>alert('Correo no encontrado.'); window.history.back();</script>";
     exit();
 }
-
+$stmtCedula->close();
+$stmtUsuario->close();
+$stmtProveedor->close();
+$stmtCred->close();
 $conn->close();
 ?>

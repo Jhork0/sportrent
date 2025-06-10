@@ -1,32 +1,8 @@
 <?php
-
-include '../logica/conectar.php';
-
-// 1. Verifica si se pasó el parámetro 'id'
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    echo "<h1>Error</h1><p><strong>Parámetro 'id' no obtenido 23132342432.</strong></p>";
-    exit;
-}
-
-$id_cancha = $_GET['id'];
-
-// 3. Consulta a la base de datos
-$sql = "SELECT * FROM cancha WHERE id_cancha = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $id_cancha);
-$stmt->execute();
-$resultado = $stmt->get_result();
-
-// 4. Verifica si se encontró la cancha
-if ($resultado->num_rows === 0) {
-    echo "<h1>Error</h1><p><strong>No se encontró la cancha con ID: $id_cancha</strong></p>";
-    exit;
-}
-
-$fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
-
-
+session_start();
+include '../logica/detalles_cancha.php';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -37,27 +13,28 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilodetalles.css">
-
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <nav class="bg-white shadow-md py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="index.php" class="text-2xl font-bold text-gray-800">SportRent</a>
-            <div class="space-x-4">
-                <a href="./proveedor.php" class="text-gray-600 hover:text-gray-900">Regresar</a>
-                <a href="#" class="text-gray-600 hover:text-gray-900">Mis Reservas</a>
-            </div>
+   <?php   include '../logica/ruta.php'; ?>
+
+<nav class="bg-white shadow-md py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <a href="<?php echo $rutaHome; ?>" class="text-2xl font-bold text-gray-800">SportRent</a>
+        <div class="space-x-4">
+            <a href="<?php echo $rutaHome; ?>" class="text-gray-600 hover:text-gray-900">Regresar</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900">Mis Reservas</a>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <main class="flex-grow container mx-auto px-4 py-8">
         <div class="bg-white rounded-xl shadow-xl overflow-hidden md:flex card-shadow">
             <div class="md:w-1/2">
-        <img class="w-full h-96 object-cover" 
-         src="data:image/jpeg;base64,<?php echo base64_encode($fila['foto']); ?>" 
-         alt="Imagen de la Cancha: <?php echo htmlspecialchars($fila['nombre_cancha'] ?? 'Nombre de la Cancha'); ?>">
-        </div>
+                <img class="w-full h-96 object-cover" 
+                     src="data:image/jpeg;base64,<?php echo base64_encode($fila['foto']); ?>" 
+                     alt="Imagen de la Cancha: <?php echo htmlspecialchars($fila['nombre_cancha'] ?? 'Nombre de la Cancha'); ?>">
+            </div>
 
             <div class="md:w-1/2 p-8 flex flex-col justify-between">
                 <div>
@@ -95,16 +72,12 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
                     </div>
                 </div>
 
-             
-
-              
                 <div>
-                <?php include '../logica/iterarhoras.php'; ?>
+                    <?php 
 
-             
+                    include '../logica/iterarhoras.php'; 
+                    ?>
                 </div>
-
-                
             </div>
         </div>
     </main>
@@ -115,7 +88,12 @@ $fila = $resultado->fetch_assoc(); // Trae los datos de la cancha
         </div>
     </footer>
 
-    <script src="../logicacalendario.js"></script>
+    <script  type="module"  src="../logicacalendario.js"></script> 
+    <script  type="module"  src="../logica_mensaje.js"></script>
+
+    <div id="toast" class="fixed top-5 right-5 z-50 hidden bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300">
+        Reserva guardada exitosamente.
+    </div>
 
 </body>
 </html>

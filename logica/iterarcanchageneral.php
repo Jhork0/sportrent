@@ -1,10 +1,12 @@
 <?php
 
-include 'conectar.php'; // Asegúrate de que la ruta sea correcta
+include '../logica/conectar.php';
 
 if (isset($_SESSION['correo_usuario'])) {
     $correo_recibido = $_SESSION['correo_usuario'];
 }
+
+
 
 // Construcción de la consulta SQL
 $sql = "SELECT * FROM cancha";

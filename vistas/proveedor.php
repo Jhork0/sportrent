@@ -101,7 +101,7 @@ session_start();  // Esto debe ser lo PRIMERO en el archivo
        </div>
 
       <div class="container">
-        <label class="form-label">Filtrar por precio por hora:</label>
+        <label class="form-label">Filtrar por precio:</label>
         <div class="d-flex flex-wrap align-items-center">
           <div class="form-group mx-2">
             <input type="number" class="form-control filtro-precio" id="precio-min" placeholder="Precio mínimo">

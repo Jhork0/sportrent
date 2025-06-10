@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,7 +35,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_cliente.php">Editar mis datos</a></li>
-          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver mis solicitudes</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/vista_reservas.php">Ver mis reservas</a></li>
         </ul>
       </div>
     </div>
@@ -68,24 +73,32 @@
 
 
 
-<div class="container mt-3 pt-3">
-  <label class="form-label ajuste">Filtrar por horario de apertura:</label>
-  <div class="d-flex flex-wrap">
-    <div class="form-check mx-2">
-      <input type="checkbox" class="form-check-input filtro-horario" value="manana" id="horario-manana">
-      <label class="form-check-label custom-checkbox-label" for="horario-manana">Mañana (6:00 - 12:00)</label>
-    </div>
-    <div class="form-check mx-2">
-      <input type="checkbox" class="form-check-input filtro-horario" value="noche" id="horario-noche">
-      <label class="form-check-label custom-checkbox-label" for="horario-noche">Noche (18:00 - 23:59)</label>
-    </div>
-  </div>
-</div>
+
+       <div class="filtros-container mb-4">
+      <div class="container">
+        <label class="form-label">Filtrar por horario de apertura:</label>
+        <div class="d-flex flex-wrap">
+
+
+          <div class="form-check mx-2">
+            <input type="checkbox" class="form-check-input filtro-cancha" value="manana" id="horario-manana">
+            <label class="form-check-label custom-checkbox-label" for="horario-manana">Mañana (6:00 - 12:00)</label>
+          </div>
+
+
+          <div class="form-check mx-2">
+            <input type="checkbox" class="form-check-input filtro-cancha" value="noche" id="horario-noche">
+            <label class="form-check-label custom-checkbox-label" for="horario-noche">Noche (18:00 - 23:59)</label>
+          </div>
+
+        </div>
+      </div>
+       </div>
 
 
 
-<div class="container mt-3 pt-3">
-  <label class="form-label ajuste">Filtrar por precio por hora:</label>
+<div class="container ">
+  <label class="form-label ">Filtrar por precio :</label>
   <div class="d-flex flex-wrap align-items-center">
     <div class="form-group mx-2">
       <input type="number" class="form-control filtro-precio" id="precio-min" placeholder="Precio mínimo">

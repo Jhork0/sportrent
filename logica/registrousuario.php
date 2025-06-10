@@ -1,5 +1,5 @@
 <?php
-include 'conectar.php';
+include '../logica/conectar.php';
 
 
 

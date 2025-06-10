@@ -1,31 +1,33 @@
 <?php
+// obtener_horarios.php
+include '../logica/conectar.php';
 
-// Convertir las horas en formato de tiempo
+
+$fecha_reserva = $_POST['fecha_reserva'] ?? date('Y-m-d');
+$id_cancha = $_POST['id_cancha'] ?? '';
+
+// Consultar horarios de apertura/cierre de la cancha
+$query_cancha = "SELECT hora_apertura, hora_cierre FROM cancha WHERE id_cancha = ?";
+$stmt_cancha = $conn->prepare($query_cancha);
+$stmt_cancha->bind_param("s", $id_cancha);
+$stmt_cancha->execute();
+$result_cancha = $stmt_cancha->get_result();
+$fila = $result_cancha->fetch_assoc();
+
+// Procesar horarios como en el código anterior
 $hora_apertura = strtotime($fila['hora_apertura'] ?? '06:00');
 $hora_cierre = strtotime($fila['hora_cierre'] ?? '13:00');
 
-// Si la cancha funciona las 24 horas, establecer el rango completo
 if ($fila['hora_apertura'] === '00:00' && $fila['hora_cierre'] === '00:00') {
     $hora_apertura = strtotime('00:00');
     $hora_cierre = strtotime('23:59');
 }
 
-echo '<form id="formReserva" method="POST" class="space-y-4">';
-
-// Campo de selección de fecha de reserva
-echo '<div class="mb-6">';
-echo '<label for="fecha_reserva" class="block text-lg font-semibold text-gray-700">Selecciona la Fecha de Reserva:</label>';
-echo '<input type="date" id="fecha_reserva" name="fecha_reserva" class="mt-2 px-4 py-2 border rounded-lg text-gray-800" min="' . date('Y-m-d') . '" value="' . date('Y-m-d') . '" required>';
-echo '</div>';
-
-// Obtener la fecha seleccionada (por defecto la fecha actual para la carga inicial)
-$fecha_seleccionada = date('Y-m-d'); 
-
-// Consultar las reservas existentes para esta cancha en la fecha seleccionada
+// Consultar reservas existentes
 $query_reservas = "SELECT hora_inicio, hora_final FROM reserva 
-                    WHERE id_cancha = ? AND fecha_reserva = ? AND estado != 'cancelada'";
+                  WHERE id_cancha = ? AND fecha_reserva = ? AND estado != 'cancelada'";
 $stmt_reservas = $conn->prepare($query_reservas);
-$stmt_reservas->bind_param("ss", $id_cancha, $fecha_seleccionada);
+$stmt_reservas->bind_param("ss", $id_cancha, $fecha_reserva);
 $stmt_reservas->execute();
 $result_reservas = $stmt_reservas->get_result();
 
@@ -37,8 +39,7 @@ while ($reserva = $result_reservas->fetch_assoc()) {
     ];
 }
 
-echo '<div class="flex flex-wrap gap-2" id="horarios-container">';
-// Este bucle se duplica en obtener_horarios.php, considera usar una función para evitar duplicidad
+// Generar los botones de horario
 for ($hora = $hora_apertura; $hora < $hora_cierre; $hora = strtotime("+1 hour", $hora)) {
     $hora_inicio = date("H:i", $hora);
     $hora_fin = date("H:i", strtotime("+1 hour", $hora));
@@ -63,14 +64,4 @@ for ($hora = $hora_apertura; $hora < $hora_cierre; $hora = strtotime("+1 hour", 
         echo '</label>';
     }
 }
-echo '</div>';
-
-echo '<input type="hidden" name="id_cancha" value="' . htmlspecialchars($id_cancha) . '">';
-
-if (isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] === 'cliente') {
-    echo '<button type="submit" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Reservar Horario</button>';
-} elseif(!isset($_SESSION['tipo_usuario'])){
-       echo "<h1>Error</h1><p><strong>Parámetro 'tipo_usuario' no obtenido .</strong></p>";
-}
-echo '</form>';
 ?>

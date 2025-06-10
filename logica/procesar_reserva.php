@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("sssssss", $id_reserva, $fecha_reserva, $hora_inicio, $hora_final, $estado, $cedula_persona, $id_cancha);
 
     if ($stmt->execute()) {
-        echo "<h1>Reserva Confirmada</h1><p>Tu reserva ha sido guardada exitosamente, y proxima a confirmacion por parte del proveedor de la cancha.</p>";
+         echo "Reserva Confirmada";
     } else {
         echo "<h1>Error</h1><p>No se pudo registrar la reserva. Inténtalo nuevamente.</p>";
     }
