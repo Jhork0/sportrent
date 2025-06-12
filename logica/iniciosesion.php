@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include 'conectar.php';
@@ -23,7 +22,7 @@ $stmtCedula->store_result();
 if ($stmtCedula->num_rows > 0) {
     $stmtCedula->bind_result($cedula);
     $stmtCedula->fetch();
-    $_SESSION['cedula_usuario'] = $cedula;
+    $_SESSION['cedula_usuario'] = $cedula; // Guardar en sesión, no sobrescribir
 
     // Paso 2: Verificar tipo de usuario
     $sqlUsuario = "SELECT id_credencial FROM usuario WHERE cedula_persona = ?";
@@ -44,22 +43,19 @@ if ($stmtCedula->num_rows > 0) {
         $stmtUsuario->fetch();
         $tipo_usuario = 'cliente';
         $redirectUrl = "../vistas/home.php";
-        $_SESSION['correo_usuario'] = $correo;
-        $_SESSION['tipo_usuario'] = $tipo_usuario;
     } elseif ($stmtProveedor->num_rows > 0) {
         $stmtProveedor->bind_result($id_credencial);
         $stmtProveedor->fetch();
         $tipo_usuario = 'proveedor';
         $redirectUrl = "../vistas/proveedor.php";
-        $_SESSION['correo_usuario'] = $correo;
-        $_SESSION['tipo_usuario'] = $tipo_usuario;
     } else {
         echo "<script>alert('El usuario no tiene perfil asignado.'); window.history.back();</script>";
         exit();
     }
 
-    
-    
+    // Guardar datos en sesión
+    $_SESSION['correo_usuario'] = $correo;
+    $_SESSION['tipo_usuario'] = $tipo_usuario;
 
     // Paso 3: Validar contraseña
     $sqlCred = "SELECT contraseña FROM credencial WHERE id_credencial = ?";
@@ -75,16 +71,34 @@ if ($stmtCedula->num_rows > 0) {
         if (password_verify($password, $hashed_password)) {
             header("Location: $redirectUrl");
             exit();
+        } else {
+            // Mensaje de depuración detallado
+            $debugInfo = [
+                'correo_ingresado' => $correo,
+                'password_ingresada' => $password,
+                'password_hash_en_db' => $hashed_password,
+                'tipo_usuario_intentado' => $tipo_usuario,
+                'id_credencial' => $id_credencial,
+                'cedula' => $cedula
+            ];
+            
+            echo "<script>
+                alert('Contraseña incorrecta. Información para depuración:\\n\\n" . 
+                json_encode($debugInfo, JSON_PRETTY_PRINT) . "');
+                window.history.back();
+            </script>";
+            exit();
         }
+    } else {
+        echo "<script>alert('No se encontraron credenciales para este usuario.'); window.history.back();</script>";
+        exit();
     }
-
-    echo "<script>alert('Contraseña incorrecta.'); window.history.back();</script>";
-    exit();
 
 } else {
     echo "<script>alert('Correo no encontrado.'); window.history.back();</script>";
     exit();
 }
+
 $stmtCedula->close();
 $stmtUsuario->close();
 $stmtProveedor->close();

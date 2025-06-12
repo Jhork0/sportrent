@@ -8,6 +8,10 @@ if(!isset($_SESSION['correo_usuario']) || !isset($_SESSION['tipo_usuario']) || $
     exit();
 }
 
+if ($_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
+}
+
 $correo = $_SESSION['correo_usuario'];
 $cedula = $_SESSION['cedula_usuario'] ?? null;
 

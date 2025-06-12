@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         toast.classList.add("hidden");
                         toast.classList.remove("opacity-100");
                         window.location.reload();
-                    }, 3000);
+                    }, 1000);
                 } else {
                     alert("Error al registrar la reserva: " + response);
                 }

@@ -76,6 +76,59 @@ if (!$resultado) {
     echo "Error en la consulta SQL: " . $conn->error;
     exit();
 }
+
+$promedio_recibido = "Sin calificaciones";
+
+if (isset($_SESSION['cedula_usuario'])) {
+    $cedula_usuario = $_SESSION['cedula_usuario'];
+
+    $sql = "
+        SELECT AVG(c.puntuacion) AS promedio
+        FROM calificacion c
+        JOIN reserva r ON c.id_reserva = r.id_reserva
+        WHERE r.cedula_persona = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $cedula_usuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        if (!is_null($row['promedio'])) {
+            $promedio_recibido = number_format($row['promedio'], 1) . " ⭐";
+        }
+    }
+
+    $stmt->close();
+}
+
+
+$comentarios = [];
+
+$sql_comentarios = "
+    SELECT c.comentario, c.puntuacion, c.fecha
+    FROM calificacion c
+    JOIN reserva r ON c.id_reserva = r.id_reserva
+    WHERE r.id_cancha = ?
+    ORDER BY c.fecha DESC
+    LIMIT 3
+";
+
+$stmt_com = $conn->prepare($sql_comentarios);
+$stmt_com->bind_param("s", $id_cancha);
+$stmt_com->execute();
+$result_com = $stmt_com->get_result();
+
+while ($comentario_row = $result_com->fetch_assoc()) {
+    $comentarios[] = $comentario_row;
+}
+
+$stmt_com->close();
+
+
+
+
 ?>
 
 <div class="container">
@@ -83,35 +136,67 @@ if (!$resultado) {
         <h1 class="display-3">Bienvenido a SportRent</h1>
         <p class="lead">Ingresa de forma segura, fácil y rápido tus canchas deportivas.</p>
         <p class="text-muted">Sesión iniciada como: <?php echo htmlspecialchars($correo_recibido); ?></p>
+        <p class="text-muted">Promedio general de calificaciones hacia ti: <?php echo $promedio_recibido; ?></p>
+
+
+        
     </header>
 
-    <div class="row text-center" id="canchas-container">
-        <?php
-        if ($resultado->num_rows > 0) {
-            while ($fila = $resultado->fetch_assoc()) {
-        ?>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="card h-100">
-                    <img class="card-img-top" src="data:image/jpeg;base64,<?php echo base64_encode($fila['foto']); ?>" alt="<?php echo htmlspecialchars($fila['nombre_cancha']); ?>">
-                    <div class="card-body">
-                        <h4 class="card-title"><?php echo htmlspecialchars($fila['nombre_cancha']); ?></h4>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge badge-primary">$<?php echo htmlspecialchars($fila['valor_hora']); ?>/hora</span>
-                            <span class="badge badge-secondary"><?php echo htmlspecialchars($fila['tipo_cancha']); ?></span>
-                        </div>
+<div class="row text-center" id="canchas-container">
+    <?php
+    if ($resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            // Cálculo del promedio para cada cancha
+            $id_cancha = $fila['id_cancha'];
+            $promedio_cancha = "Sin calificaciones";
+            
+            $sql_prom = "
+                SELECT AVG(c.puntuacion) AS promedio
+                FROM calificacion c
+                JOIN reserva r ON c.id_reserva = r.id_reserva
+                WHERE r.id_cancha = ?
+            ";
+            
+            $stmt = $conn->prepare($sql_prom);
+            $stmt->bind_param("s", $id_cancha);
+            $stmt->execute();
+            $result_prom = $stmt->get_result();
+            
+            if ($row = $result_prom->fetch_assoc()) {
+                if (!is_null($row['promedio'])) {
+                    $promedio_cancha = number_format($row['promedio'], 1) . " ⭐";
+                }
+            }
+            
+            $stmt->close();
+    ?>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="data:image/jpeg;base64,<?php echo base64_encode($fila['foto']); ?>" alt="<?php echo htmlspecialchars($fila['nombre_cancha']); ?>">
+                <div class="card-body">
+                    <h4 class="card-title"><?php echo htmlspecialchars($fila['nombre_cancha']); ?></h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge badge-primary">$<?php echo htmlspecialchars($fila['valor_hora']); ?>/hora</span>
+                        <span class="badge badge-secondary"><?php echo htmlspecialchars($fila['tipo_cancha']); ?></span>
                     </div>
-                    <div class="card-footer bg-transparent">
-                        <a href="plantilla.php?id=<?php echo htmlspecialchars($fila['id_cancha']); ?>" class="btn btn-success btn-block">Ver detalles</a>
+                    <div class="mt-2">
+                        <span class="badge badge-info">Calificación: <?php echo $promedio_cancha; ?></span>
                     </div>
+
+                    
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="plantilla.php?id=<?php echo htmlspecialchars($fila['id_cancha']); ?>" class="btn btn-success btn-block">Ver detalles</a>
                 </div>
             </div>
-        <?php
-            }
-        } else {
-            echo "<div class='col-12'><p>No se encontraron canchas con los filtros seleccionados.</p></div>";
+        </div>
+    <?php
         }
-        ?>
-    </div>
+    } else {
+        echo "<div class='col-12'><p>No se encontraron canchas con los filtros seleccionados.</p></div>";
+    }
+    ?>
+</div>
 </div>
 
 <?php

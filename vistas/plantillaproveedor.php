@@ -1,6 +1,11 @@
 <?php
 session_start();
 include '../logica/detalles_cancha.php';
+
+if ($_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
+}
+
 ?>
 
 
@@ -74,7 +79,7 @@ include '../logica/detalles_cancha.php';
                 <div>
                     <?php 
 
-                    include '../logica/iterarhoras.php'; 
+                    include '../logica/iterarhorasproveedor.php'; 
                     ?>
                 </div>
             </div>

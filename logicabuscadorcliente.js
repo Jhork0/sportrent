@@ -15,7 +15,7 @@ function loadCanchas() {
     var busqueda = $('#inputSearch').val(); // corregido aquí
 
     $.ajax({
-        url: '../logica/iterarcanchageneralproveedor.php',
+        url: '../logica/iterarcanchageneral.php',
         type: 'GET',
         data: {
             tipos_cancha: selectedTypes.join(','),

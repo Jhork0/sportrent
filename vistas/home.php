@@ -20,7 +20,7 @@ session_start();
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="../vistas/proveedor.php">SportRent</a>
+      <a class="navbar-brand" href="../vistas/home.php">SportRent</a>
 
       <form class="form-inline my-2 my-lg-0" id="searchForm">
         <input class="form-control mr-sm-2" type="search" 
@@ -124,7 +124,7 @@ include '../logica/iterarcanchageneral.php';
   <!-- Bootstrap core JavaScript -->
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../logicabuscador.js"></script>
+  <script src="../logicabuscadorcliente.js"></script>
 
 </body>
 </html>

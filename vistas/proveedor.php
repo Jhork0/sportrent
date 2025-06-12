@@ -1,5 +1,8 @@
 <?php 
 session_start();  // Esto debe ser lo PRIMERO en el archivo
+if ($_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +36,7 @@ session_start();  // Esto debe ser lo PRIMERO en el archivo
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="../vistas/vercanchasproveedor.php">Ver mis canchas</a></li>
-          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver solicitudes</a></li>
-          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ver reservas activas</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/vistareservasproveedor.php">Ver reservas de mis canchas</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_proveedor.php">Editar datos</a></li>
         </ul>
       </div>
@@ -114,7 +116,7 @@ session_start();  // Esto debe ser lo PRIMERO en el archivo
       </div>
 
     <!-- Aquí deberías incluir el contenido principal -->
-    <?php include '../logica/iterarcanchageneral.php'; ?>
+    <?php include '../logica/iterarcanchageneralproveedor.php'; ?>
 
   </div> <!-- Cierre del contenedor principal -->
 

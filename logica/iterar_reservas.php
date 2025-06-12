@@ -1,6 +1,12 @@
 <?php
 include '../logica/conectar.php'; // Asegúrate de tener la conexión correctamente establecida
 
+
+if (!$_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
+}
+
+
 date_default_timezone_set('America/Bogota');
 $fecha_actual = date('Y-m-d H:i:s');
 

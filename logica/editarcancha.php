@@ -2,7 +2,9 @@
 include '../logica/conectar.php';
 
 // Depuración: Mostrar parámetros GET recibidos
-
+if ($_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
+}
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("ID de cancha no proporcionado.");
