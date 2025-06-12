@@ -7,7 +7,8 @@ if (!isset($_SESSION['cedula_usuario'])) {
 }
 
 if ($_SESSION['tipo_usuario'] === 'cliente') {
-     header("Location: ../index.php");
+    header("Location: ../index.php");
+    exit(); // Always call exit after a header redirect
 }
 
 $cedula_propietario = $_SESSION['cedula_usuario'];
@@ -18,9 +19,18 @@ $error_message = '';
 $estados_filtrados = $_GET['estado'] ?? [];
 
 // Base SQL
-$sql = "SELECT r.id_reserva, r.fecha_reserva, r.hora_inicio, r.hora_final, r.estado, r.cedula_persona, a.cod_cancha
+$sql = "SELECT r.id_reserva, r.fecha_reserva, r.hora_inicio, r.hora_final, r.estado, 
+               r.cedula_persona, a.cod_cancha, c.puntuacion, c.comentario, 
+               COALESCE(u.promedio_usuario, 0) AS promedio_usuario_calificacion
         FROM reserva r
         JOIN administra a ON r.id_cancha = a.cod_cancha
+        LEFT JOIN calificacion c ON r.id_reserva = c.id_reserva
+        LEFT JOIN (
+            SELECT res.cedula_persona, AVG(cal.puntuacion) AS promedio_usuario
+            FROM calificacion cal
+            JOIN reserva res ON cal.id_reserva = res.id_reserva
+            GROUP BY res.cedula_persona
+        ) u ON r.cedula_persona = u.cedula_persona
         WHERE a.cedula_propietario = ?";
 
 // Si hay filtros, agregamos condición
@@ -37,12 +47,19 @@ if (!empty($estados_filtrados)) {
 $sql .= " ORDER BY r.fecha_reserva DESC";
 
 if ($stmt = $conn->prepare($sql)) {
+    // Dynamically bind parameters
     $stmt->bind_param($tipos, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         while ($fila = $result->fetch_assoc()) {
+            // Format the average rating if it's not null
+            if (!is_null($fila['promedio_usuario_calificacion'])) {
+                $fila['promedio_usuario_calificacion_formateado'] = number_format($fila['promedio_usuario_calificacion'], 1) . " ⭐";
+            } else {
+                $fila['promedio_usuario_calificacion_formateado'] = "N/A"; // Or 0 ⭐ or whatever you prefer for no ratings
+            }
             $reservas[] = $fila;
         }
     } else {
@@ -53,4 +70,6 @@ if ($stmt = $conn->prepare($sql)) {
 } else {
     $error_message = "Error al preparar la consulta: " . $conn->error;
 }
+
+
 ?>

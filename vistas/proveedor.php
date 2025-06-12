@@ -38,6 +38,7 @@ if ($_SESSION['tipo_usuario'] === 'cliente') {
           <li class="nav-item"><a class="nav-link" href="../vistas/vercanchasproveedor.php">Ver mis canchas</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/vistareservasproveedor.php">Ver reservas de mis canchas</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_proveedor.php">Editar datos</a></li>
+          <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ingresar cancha</a></li>
         </ul>
       </div>
     </div>

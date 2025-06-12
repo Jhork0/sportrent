@@ -13,6 +13,11 @@
     // Incluimos el archivo que obtiene las reservas
     include '../logica/reservasproveedor.php';
     include '../logica/actualizar_reservas.php';
+
+   
+    
+
+                               
     ?>
 
     <nav class="bg-white shadow-md py-4">
@@ -85,16 +90,49 @@
                                            ($fila['estado'] === 'calificado' ? 'bg-pink-100 text-pink-800' :  
                                             ($fila['estado'] === 'finalizada' ? 'bg-purple-100 text-purple-800' :  
                                           ($fila['estado'] === 'transaccion' ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800'))))); ?>">
-                                     <?php echo ucfirst(htmlspecialchars($fila['estado'])); ?>
+                                     <?php echo ucfirst(htmlspecialchars($fila['estado'])); 
+                                        
+                                     ?>
+                    
                                  </span>
+                               
+                    
                             </p>
+
+
+                         
                             <p class="text-gray-600">
-                                <span class="font-medium">Cliente (Cédula):</span>
-                                <?php echo htmlspecialchars($fila['cedula_persona']); ?>
+
+                               Cedula cliente: <?php echo htmlspecialchars($fila['cedula_persona']); ?>
                             </p>
+                    <?php if ($fila['estado'] === 'calificado'): ?>
+                           <p class="text-gray-600">
+
+                        <span class="font-medium">Calificacion de la cancha</span>
+                                    <?php if ($fila['puntuacion'] !== 'N/A'): ?>
+                               <?php echo htmlspecialchars($fila['puntuacion']); ?>
+                        <?php endif; ?>
+                            </p>
+                    <?php endif; ?>
+
+
+
+                 
+                           <p class="text-gray-600">
+
+                        <span class="font-medium">Promedio de estrellas del usuario</span>
+                          <?php if ($fila['promedio_usuario_calificacion'] !== 'N/A'): ?>
+                        <?php echo number_format((float)$fila['promedio_usuario_calificacion'], 2, '.', ''); ?>
+                        <?php endif; ?>
+                            </p>
+                
+                
+
+                          
+                             
                         </div>
 
-                        <?php if ($fila['estado'] === 'confirmada' || $fila['estado'] === 'pendiente' || $fila['estado'] === 'transaccion'): ?>
+                        <?php if ($fila['estado'] === 'transaccion'): ?>
                             <form action="../logica/cancelar_reserva_proveedor.php" method="post" class="mt-4">
                                 <input type="hidden" name="id_reserva" value="<?php echo $fila['id_reserva']; ?>">
                                 <button type="submit"
@@ -114,6 +152,8 @@
                                 </button>
                             </form>
                         <?php endif; ?>
+
+                      
 
 
                           <?php if ($fila['estado'] === 'transaccion'): ?>
