@@ -1,65 +1,67 @@
-// ../logicacalendario.js
-
-// Lógica para establecer la fecha mínima en el input de fecha (se ejecuta al cargar el módulo)
 document.addEventListener("DOMContentLoaded", function () {
-    let fechaReserva = document.getElementById("fecha_reserva");
+    const fechaReserva = document.getElementById("fecha_reserva");
     if (fechaReserva) {
-        let hoy = new Date().toISOString().split("T")[0];
+        const hoy = new Date().toISOString().split("T")[0];
         fechaReserva.setAttribute("min", hoy);
-        fechaReserva.dispatchEvent(new Event('change'));
+        // No es necesario disparar el evento change aquí
     } else {
         console.error("El elemento 'fecha_reserva' no se encontró en el DOM al cargar.");
     }
 });
 
+const cambiarhorarios = (function() {
+    let eventListenerAdded = false;
+    
+    return function(fechaInicial = null) {
+        const fechaReservaInput = document.getElementById('fecha_reserva');
+        const horariosContainer = document.getElementById('horarios-container');
+        const idCanchaInput = document.querySelector('input[name="id_cancha"]');
 
-// Función que se encarga de la lógica de actualización de horarios
-// y que será exportada.
-// Función que se encarga de la lógica de actualización de horarios
-// y que será exportada.
-const cambiarhorarios = function (fechaInicial = null) {
-    const fechaReservaInput = document.getElementById('fecha_reserva');
-    const horariosContainer = document.getElementById('horarios-container');
-    const idCanchaInput = document.querySelector('input[name="id_cancha"]');
+        if (!fechaReservaInput || !horariosContainer || !idCanchaInput) {
+            console.error("Elementos DOM requeridos no encontrados");
+            return;
+        }
 
-    if (fechaReservaInput && horariosContainer && idCanchaInput) {
-        // Si se proporciona una fecha inicial, establecerla en el input
         if (fechaInicial) {
             fechaReservaInput.value = fechaInicial;
         }
 
-        // Función para cargar los horarios
-        const cargarHorarios = () => {
-            const fechaSeleccionada = fechaReservaInput.value;
-            const idCancha = idCanchaInput.value;
-            
-            fetch('../logica/obtener_horarios.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `fecha_reserva=${fechaSeleccionada}&id_cancha=${idCancha}`
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La respuesta de la red no fue correcta ' + response.statusText);
-                }
-                return response.text();
-            })
-            .then(html => {
-                horariosContainer.innerHTML = html;
-            })
-            .catch(error => console.error('Error al obtener los horarios:', error));
-        };
+// Modificar la función cargarHorarios para enviar la hora actual
+const cargarHorarios = () => {
+    const fechaSeleccionada = fechaReservaInput.value;
+    const idCancha = idCanchaInput.value;
+    const ahora = new Date();
+    const horaActual = ahora.getHours().toString().padStart(2, '0') + ':' + ahora.getMinutes().toString().padStart(2, '0');
+    
+    fetch('../logica/obtener_horarios.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `fecha_reserva=${encodeURIComponent(fechaSeleccionada)}&id_cancha=${encodeURIComponent(idCancha)}&hora_actual=${encodeURIComponent(horaActual)}`
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        return response.text();
+    })
+    .then(html => {
+        horariosContainer.innerHTML = html;
+    })
+    .catch(error => {
+        console.error('Error al obtener horarios:', error);
+        horariosContainer.innerHTML = '<p class="text-red-500">Error al cargar horarios</p>';
+    });
+};
 
         // Cargar horarios inicialmente
         cargarHorarios();
 
-        // Añadir el listener para futuros cambios de fecha
-        fechaReservaInput.addEventListener('change', cargarHorarios);
-    } else {
-        console.error("No se encontraron los elementos DOM requeridos para la actualización dinámica de horarios.");
-    }
-};
+        // Añadir listener solo si no se ha añadido antes
+        if (!eventListenerAdded) {
+            fechaReservaInput.addEventListener('change', cargarHorarios);
+            eventListenerAdded = true;
+        }
+    };
+})();
 
 export { cambiarhorarios };

@@ -6,7 +6,11 @@ include 'conectar.php';
 $correo = filter_var($_POST['correoi'] ?? '', FILTER_SANITIZE_EMAIL);
 $password = trim($_POST['passwordi'] ?? '');
 
-
+// --- Agregando el if para verificar campos vacíos ---
+if (empty($correo) || empty($password)) {
+    echo "<script>alert('Por favor, ingrese su correo y contraseña.'); window.history.back();</script>";
+    exit();
+}
 
 // Paso 1: Obtener cédula asociada al correo
 $sqlCedula = "SELECT cedula_persona FROM persona WHERE correo = ?";
@@ -78,11 +82,14 @@ if ($stmtCedula->num_rows > 0) {
                 'cedula' => $cedula
             ];
             
-            echo "<script>
-                alert('Contraseña incorrecta. Información para depuración:\\n\\n" . 
-                json_encode($debugInfo, JSON_PRETTY_PRINT) . "');
-                window.history.back();
-            </script>";
+          $debugJson = json_encode($debugInfo, JSON_PRETTY_PRINT);
+$debugJsonJsSafe = json_encode($debugJson); // Esto convierte el JSON en una cadena JS válida
+
+echo "<script>
+    alert('Contraseña incorrecta');
+    window.history.back();
+</script>";
+
             exit();
         }
     } else {
