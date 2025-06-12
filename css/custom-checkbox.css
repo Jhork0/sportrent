@@ -1,14 +1,7 @@
 /* custom-checkbox.css */
 
 /* Hide the default checkbox */
-.form-check-input.filtro-cancha {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
+.form-check-input.filtro-cancha,
 .form-check-input.filtro-horario {
     position: absolute;
     opacity: 0;
@@ -16,7 +9,6 @@
     height: 0;
     width: 0;
 }
-
 
 /* Style the custom checkbox container */
 .custom-checkbox-label {
@@ -43,7 +35,8 @@
 }
 
 /* Style the custom checkbox indicator when checked */
-.form-check-input.filtro-cancha:checked + .custom-checkbox-label::before {
+.form-check-input.filtro-cancha:checked + .custom-checkbox-label::before,
+.form-check-input.filtro-horario:checked + .custom-checkbox-label::before {
     background-color: #007bff; /* Primary blue background when checked */
     border-color: #007bff; /* Primary blue border when checked */
 }
@@ -64,7 +57,8 @@
 }
 
 /* Show the checkmark when the checkbox is checked */
-.form-check-input.filtro-cancha:checked + .custom-checkbox-label::after {
+.form-check-input.filtro-cancha:checked + .custom-checkbox-label::after,
+.form-check-input.filtro-horario:checked + .custom-checkbox-label::after {
     opacity: 1;
 }
 
@@ -74,7 +68,8 @@
 }
 
 /* Focus effect for accessibility */
-.form-check-input.filtro-cancha:focus + .custom-checkbox-label::before {
+.form-check-input.filtro-cancha:focus + .custom-checkbox-label::before,
+.form-check-input.filtro-horario:focus + .custom-checkbox-label::before {
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Stronger blue shadow on focus */
 }
 
@@ -98,55 +93,54 @@
     }
 }
 
-
-  body {
+body {
     padding-top: 56px; /* Altura del navbar */
-  }
-  
-  /* Ajustes para pantallas pequeñas (menos de 992px - punto de quiebre de lg en Bootstrap) */
-  @media (max-width: 991.98px) {
+}
+
+/* Ajustes para pantallas pequeñas (menos de 992px - punto de quiebre de lg en Bootstrap) */
+@media (max-width: 991.98px) {
     /* Asegura que el navbar colapsado ocupe todo el ancho */
     .navbar-collapse {
-      background-color: #343a40; /* Mismo color que el navbar */
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 4px;
+        background-color: #343a40; /* Mismo color que el navbar */
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 4px;
     }
     
     /* Espaciado para los items del menú en móvil */
     .navbar-nav .nav-item {
-      margin-bottom: 8px;
+        margin-bottom: 8px;
     }
     
     /* Ajusta el formulario de búsqueda en móvil */
     #searchForm {
-      margin-bottom: 15px;
-      width: 100%;
+        margin-bottom: 15px;
+        width: 100%;
     }
     
     /* Hace que el input de búsqueda ocupe todo el ancho */
     #searchForm .form-control {
-      width: calc(100% - 90px); /* Resta el ancho del botón */
+        width: calc(100% - 90px); /* Resta el ancho del botón */
     }
-  }
-  
-  /* Ajustes adicionales para pantallas muy pequeñas (menos de 576px) */
-  @media (max-width: 575.98px) {
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas (menos de 576px) */
+@media (max-width: 575.98px) {
     body {
-      padding-top: 70px; /* Más espacio para el navbar que puede ser más alto */
+        padding-top: 70px; /* Más espacio para el navbar que puede ser más alto */
     }
     
     /* Ajusta el tamaño de los textos */
     .navbar-brand, .nav-link {
-      font-size: 0.9rem;
+        font-size: 0.9rem;
     }
     
     /* Reduce el padding del contenedor */
     .navbar > .container {
-      padding-left: 10px;
-      padding-right: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
-  }
+}
 
 @media (max-width: 576px) {
     .ajuste{
@@ -159,4 +153,3 @@
         padding-top: 100px;
     }
 }
-
