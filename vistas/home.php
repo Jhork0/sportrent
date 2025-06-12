@@ -71,32 +71,6 @@ session_start();
   </div>
 </div>
 
-
-
-
-       <div class="filtros-container mb-4">
-      <div class="container">
-        <label class="form-label">Filtrar por horario de apertura:</label>
-        <div class="d-flex flex-wrap">
-
-
-          <div class="form-check mx-2">
-            <input type="checkbox" class="form-check-input filtro-cancha" value="manana" id="horario-manana">
-            <label class="form-check-label custom-checkbox-label" for="horario-manana">Mañana (6:00 - 12:00)</label>
-          </div>
-
-
-          <div class="form-check mx-2">
-            <input type="checkbox" class="form-check-input filtro-cancha" value="noche" id="horario-noche">
-            <label class="form-check-label custom-checkbox-label" for="horario-noche">Noche (18:00 - 23:59)</label>
-          </div>
-
-        </div>
-      </div>
-       </div>
-
-
-
 <div class="container ">
   <label class="form-label ">Filtrar por precio :</label>
   <div class="d-flex flex-wrap align-items-center">
@@ -110,6 +84,19 @@ session_start();
   </div>
 </div>
 
+<div class="container">
+  <label class="form-label">Filtrar por horario:</label>
+  <div class="d-flex flex-wrap">
+    <div class="form-check mx-2">
+      <input type="checkbox" class="form-check-input filtro-horario" value="manana" id="manana">
+      <label class="form-check-label custom-checkbox-label" for="manana">Mañana (hasta las 11:00 AM)</label>
+    </div>
+    <div class="form-check mx-2">
+      <input type="checkbox" class="form-check-input filtro-horario" value="tarde" id="tarde">
+      <label class="form-check-label custom-checkbox-label" for="tarde">Tarde (hasta las 11:00 PM)</label>
+    </div>
+  </div>
+</div>
 
   <!-- Header -->
   <div id="header"></div>

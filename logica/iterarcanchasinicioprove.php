@@ -114,12 +114,13 @@ if (isset($_SESSION['cedula_usuario'])) {
 <div class="container">
     <header class="jumbotron my-4">
         <h1 class="display-3">Bienvenido a SportRent</h1>
-        <p class="lead">Ingresa de forma segura, fácil y rápido tus canchas deportivas.</p>
+        <p class="lead">Ingresa de forma segura, fácil y rápido tus canchas deportivas. </p>
         <p class="text-muted">Sesión iniciada como: <?php echo htmlspecialchars($correo_recibido); ?></p>
-        <p class="text-muted">Promedio general de calificaciones hacia ti: <?php echo $promedio_recibido; ?></p>
     </header>
 
-    <div class="row text-center" id="canchas-container">
+       <div class="row text-center" id="canchas-container">
+        
+
         <?php
         if ($resultado->num_rows > 0) {
             while ($fila = $resultado->fetch_assoc()) {
@@ -139,11 +140,11 @@ if (isset($_SESSION['cedula_usuario'])) {
                                 </span>
                             </div>
                             <div class="mt-2">
-                                <span class="badge badge-info">Calificación: <?php echo $promedio_cancha; ?></span>
+                                <span class="badge badge-info">Calificación:  <?php echo $promedio_cancha; ?></span>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <a href="plantilla.php?id=<?php echo htmlspecialchars($fila['id_cancha']); ?>" class="btn btn-success btn-block">Ver detalles</a>
+                            <a href="plantillaproveedor.php?id=<?php echo htmlspecialchars($fila['id_cancha']); ?>" class="btn btn-success btn-block">Ver detalles</a>
                         </div>
                     </div>
                 </div>
@@ -153,6 +154,7 @@ if (isset($_SESSION['cedula_usuario'])) {
             echo "<div class='col-12'><p>No se encontraron canchas con los filtros seleccionados.</p></div>";
         }
         ?>
+
     </div>
 </div>
 

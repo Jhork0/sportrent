@@ -6,11 +6,7 @@ include 'conectar.php';
 $correo = filter_var($_POST['correoi'] ?? '', FILTER_SANITIZE_EMAIL);
 $password = trim($_POST['passwordi'] ?? '');
 
-// Validar que no esté vacío
-if (empty($correo) || empty($password)) {
-    echo "<script>alert('Debe ingresar su correo y contraseña.'); window.history.back();</script>";
-    exit();
-}
+
 
 // Paso 1: Obtener cédula asociada al correo
 $sqlCedula = "SELECT cedula_persona FROM persona WHERE correo = ?";

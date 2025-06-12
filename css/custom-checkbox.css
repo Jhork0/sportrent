@@ -9,6 +9,15 @@
     width: 0;
 }
 
+.form-check-input.filtro-horario {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+
 /* Style the custom checkbox container */
 .custom-checkbox-label {
     position: relative;
