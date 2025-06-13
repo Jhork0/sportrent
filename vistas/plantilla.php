@@ -1,10 +1,10 @@
 <?php
-session_start();
-include '../logica/detalles_cancha.php';
 
-if (!$_SESSION['tipo_usuario'] === 'cliente') {
-     header("Location: ../index.php");
+if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 'cliente') {
+    header("Location: ../index.php");
+    exit(); // Importante para evitar que el script siga ejecutándose
 }
+
 
 // Obtener calificación promedio y comentarios
 $id_cancha = $fila['id_cancha'];
