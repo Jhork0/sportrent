@@ -17,6 +17,16 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] !== 'cliente'
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 p-6">
+    <nav class="bg-white shadow-md py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <a href="../vistas/home.php" class="text-2xl font-bold text-gray-800">SportRent</a>
+        <div class="space-x-4">
+            <a href="../vistas/home.php" class="text-gray-600 hover:text-gray-900">Regresar</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900">Mis Reservas</a>
+        </div>
+    </div>
+</nav>
+
 
     <h2 class="text-3xl font-bold text-blue-700 text-center mb-8">Información de la Reserva</h2>
 
