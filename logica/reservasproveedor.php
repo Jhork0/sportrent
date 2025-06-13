@@ -6,9 +6,10 @@ if (!isset($_SESSION['cedula_usuario'])) {
     die("<p>No tienes permisos para ver esta página.</p>");
 }
 
-if ($_SESSION['tipo_usuario'] === 'cliente') {
+
+if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 'proveedor') {
     header("Location: ../index.php");
-    exit(); // Always call exit after a header redirect
+    exit(); // Importante para evitar que el script siga ejecutándose
 }
 
 $cedula_propietario = $_SESSION['cedula_usuario'];

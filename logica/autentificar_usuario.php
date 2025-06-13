@@ -4,7 +4,7 @@ session_start();
 
 $id_usuario = $_SESSION['cedula_usuario'] ?? null;
 if (!$id_usuario) {
-    header("Location: ../vistas/login.php");
+    header("Location: ../index.php");
     exit;
 }
 

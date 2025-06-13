@@ -1,3 +1,11 @@
+<?php
+session_start();  // Esto debe ser lo PRIMERO en el archivo
+if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 'proveedor') {
+    header("Location: ../index.php");
+    exit(); // Importante para evitar que el script siga ejecutándose
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

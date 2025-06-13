@@ -1,7 +1,8 @@
 <?php 
 session_start();  // Esto debe ser lo PRIMERO en el archivo
-if ($_SESSION['tipo_usuario'] === 'cliente') {
-     header("Location: ../index.php");
+if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 'proveedor') {
+    header("Location: ../index.php");
+    exit(); // Importante para evitar que el script siga ejecutándose
 }
 ?>
 
@@ -39,6 +40,8 @@ if ($_SESSION['tipo_usuario'] === 'cliente') {
           <li class="nav-item"><a class="nav-link" href="../vistas/vistareservasproveedor.php">Ver reservas de mis canchas</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_proveedor.php">Editar datos</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/insertarcancha.php">Ingresar cancha</a></li>
+          <li class="nav-item"><a class="nav-link" href="../logica/cerrar_sesion.php">Cerrar sesion</a></li>
+
         </ul>
       </div>
     </div>

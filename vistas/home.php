@@ -36,6 +36,7 @@ session_start();
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="../vistas/editar_datos_cliente.php">Editar mis datos</a></li>
           <li class="nav-item"><a class="nav-link" href="../vistas/vista_reservas.php">Ver mis reservas</a></li>
+          <li class="nav-item"><a class="nav-link" href="../logica/cerrar_sesion.php">Cerrar sesion</a></li>
         </ul>
       </div>
     </div>
