@@ -37,7 +37,7 @@
     <h2 class="text-xl font-semibold mb-2 text-gray-700">Filtrar por estado:</h2>
     <div class="flex flex-wrap gap-4">
         <?php
-        $estados = ['caducada', 'cancelada', 'pendiente', 'transaccion', 'completada', 'finalizada', 'calificado' ];
+        $estados = ['caducada', 'cancelada', 'pendiente', 'transaccion', 'completada', 'finalizada', 'calificado', 'confirmada' ];
         $estados_seleccionados = isset($_GET['estado']) ? $_GET['estado'] : [];
 
         foreach ($estados as $estado) {
