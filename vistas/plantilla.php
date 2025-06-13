@@ -1,9 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] != 'cliente') {
+include '../logica/detalles_cancha.php';
+
+if (!isset($_SESSION['cedula_usuario']) || $_SESSION['tipo_usuario'] != 'cliente') {
     header("Location: ../index.php");
-    exit(); // Importante para evitar que el script siga ejecutándose
+    exit();
 }
+
 
 
 // Obtener calificación promedio y comentarios
