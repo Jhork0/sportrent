@@ -22,7 +22,7 @@ if (!isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] !== 'cliente'
         <a href="../vistas/home.php" class="text-2xl font-bold text-gray-800">SportRent</a>
         <div class="space-x-4">
             <a href="../vistas/home.php" class="text-gray-600 hover:text-gray-900">Regresar</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900">Mis Reservas</a>
+            <a href="../vistas/vista_reservas.php" class="text-gray-600 hover:text-gray-900">Mis Reservas</a>
         </div>
     </div>
 </nav>
