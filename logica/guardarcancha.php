@@ -18,6 +18,27 @@ $hora_cierre     = filter_var($_POST['hora_cierre'] ?? '', FILTER_SANITIZE_STRIN
 $direccion_cancha = filter_var($_POST['direccion_cancha'] ?? '', FILTER_SANITIZE_STRING);
 $estado          = 'Disponible';
 
+
+// Validar si ya existe una cancha con ese nombre (ignorando mayúsculas/minúsculas)
+$sql_check = "SELECT COUNT(*) AS total FROM cancha WHERE LOWER(nombre_cancha) = LOWER(?)";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("s", $nombre_cancha);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
+$row_check = $result_check->fetch_assoc();
+
+if ($row_check['total'] > 0) {
+    echo "<script>alert('Ya existe una cancha con ese nombre. Usa un nombre diferente.'); window.history.back();</script>";
+    $stmt_check->close();
+    $conn->close();
+    exit();
+}
+
+$stmt_check->close();
+
+
+
+
 // Paso 2: Validar si se subió una imagen
 $foto_binaria = null;
 $tamano_maximo = 1048576; // 1MB

@@ -1,5 +1,7 @@
 <?php
 include '../logica/conectar.php';
+session_start(); // Asegura que la sesión está iniciada
+
 
 // Depuración: Mostrar parámetros GET recibidos
 if ($_SESSION['tipo_usuario'] === 'cliente') {

@@ -33,6 +33,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_cancha'])) {
 
     // Comparar y construir UPDATE solo con los campos que cambiaron
     $campos_modificados = [];
+
+// Validar que el nuevo nombre no exista en otra cancha (solo si fue modificado)
+if (strtolower($nuevos['nombre_cancha']) !== strtolower($cancha_actual['nombre_cancha'])) {
+    $sql_check = "SELECT COUNT(*) AS total FROM cancha WHERE LOWER(nombre_cancha) = LOWER(?) AND id_cancha != ?";
+    $stmt_check = $conn->prepare($sql_check);
+    $stmt_check->bind_param("ss", $nuevos['nombre_cancha'], $id_cancha);
+    $stmt_check->execute();
+    $resultado = $stmt_check->get_result();
+    $fila = $resultado->fetch_assoc();
+
+    if ($fila['total'] > 0) {
+        echo "<script>alert('Ya existe otra cancha con ese nombre. Por favor, elige uno diferente.'); window.history.back();</script>";
+        $stmt_check->close();
+        exit();
+    }
+
+    $stmt_check->close();
+}
+
+
+
     $valores = [];
     $tipos = '';
 
