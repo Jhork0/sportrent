@@ -114,7 +114,7 @@ if (isset($_SESSION['cedula_usuario'])) {
 <div class="container">
     <header class="jumbotron my-4">
         <h1 class="display-3">Bienvenido a SportRent</h1>
-        <p class="lead">Ingresa de forma segura, fácil y rápido tus canchas deportivas.</p>
+        <p class="lead">Arrienda de forma segura, fácil y rápido tus canchas deportivas.</p>
         <p class="text-muted">Sesión iniciada como: <?php echo htmlspecialchars($correo_recibido); ?></p>
         <p class="text-muted">Promedio general de calificaciones hacia ti: <?php echo $promedio_recibido; ?></p>
     </header>
@@ -132,7 +132,6 @@ if (isset($_SESSION['cedula_usuario'])) {
                             <h4 class="card-title"><?php echo htmlspecialchars($fila['nombre_cancha']); ?></h4>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="badge badge-primary">$<?php echo htmlspecialchars($fila['valor_hora']); ?>/hora</span>
-                                <span class="badge badge-secondary"><?php echo htmlspecialchars($fila['tipo_cancha']); ?></span>
                                 <?php $horario_completo = $fila['hora_apertura'] . ' - ' . $fila['hora_cierre']; ?>
                                 <span class="badge badge-secondary horario-cancha" data-hora-apertura="<?php echo htmlspecialchars($fila['hora_apertura']); ?>" data-hora-cierre="<?php echo htmlspecialchars($fila['hora_cierre']); ?>">
                                     <?php echo $horario_completo; ?>
@@ -140,6 +139,9 @@ if (isset($_SESSION['cedula_usuario'])) {
                             </div>
                             <div class="mt-2">
                                 <span class="badge badge-info">Calificación: <?php echo $promedio_cancha; ?></span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge badge-secondary"><?php echo htmlspecialchars($fila['tipo_cancha']); ?></span>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
