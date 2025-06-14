@@ -22,38 +22,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_cancha'])) {
         'direccion_cancha'  => $_POST['direccion_cancha'],
     ];
 
-    // Verificar si se subió una nueva foto
-    $foto = null;
-    if (!empty($_FILES['foto']['name'])) {
-        $nombreFoto = basename($_FILES['foto']['name']);
-        $ruta = "../uploads/" . $nombreFoto;
-        move_uploaded_file($_FILES['foto']['tmp_name'], $ruta);
-        $nuevos['foto'] = $nombreFoto;
+    // Validar que el nuevo nombre no exista en otra cancha (solo si fue modificado)
+    if (strtolower($nuevos['nombre_cancha']) !== strtolower($cancha_actual['nombre_cancha'])) {
+        $sql_check = "SELECT COUNT(*) AS total FROM cancha WHERE LOWER(nombre_cancha) = LOWER(?) AND id_cancha != ?";
+        $stmt_check = $conn->prepare($sql_check);
+        $stmt_check->bind_param("ss", $nuevos['nombre_cancha'], $id_cancha);
+        $stmt_check->execute();
+        $resultado = $stmt_check->get_result();
+        $fila = $resultado->fetch_assoc();
+
+        if ($fila['total'] > 0) {
+            echo "<script>alert('Ya existe otra cancha con ese nombre. Por favor, elige uno diferente.'); window.history.back();</script>";
+            $stmt_check->close();
+            exit();
+        }
+        $stmt_check->close();
     }
 
     // Comparar y construir UPDATE solo con los campos que cambiaron
     $campos_modificados = [];
-
-// Validar que el nuevo nombre no exista en otra cancha (solo si fue modificado)
-if (strtolower($nuevos['nombre_cancha']) !== strtolower($cancha_actual['nombre_cancha'])) {
-    $sql_check = "SELECT COUNT(*) AS total FROM cancha WHERE LOWER(nombre_cancha) = LOWER(?) AND id_cancha != ?";
-    $stmt_check = $conn->prepare($sql_check);
-    $stmt_check->bind_param("ss", $nuevos['nombre_cancha'], $id_cancha);
-    $stmt_check->execute();
-    $resultado = $stmt_check->get_result();
-    $fila = $resultado->fetch_assoc();
-
-    if ($fila['total'] > 0) {
-        echo "<script>alert('Ya existe otra cancha con ese nombre. Por favor, elige uno diferente.'); window.history.back();</script>";
-        $stmt_check->close();
-        exit();
-    }
-
-    $stmt_check->close();
-}
-
-
-
     $valores = [];
     $tipos = '';
 
@@ -65,21 +52,42 @@ if (strtolower($nuevos['nombre_cancha']) !== strtolower($cancha_actual['nombre_c
         }
     }
 
-    if (!empty($campos_modificados)) {
-        $sql = "UPDATE cancha SET " . implode(", ", $campos_modificados) . " WHERE id_cancha = ?";
-        $stmt = $conn->prepare($sql);
-        $valores[] = $id_cancha;
-        $tipos .= 's';
-
-        $stmt->bind_param($tipos, ...$valores);
-
-        if ($stmt->execute()) {
-             header("Location: ../vistas/vercanchasproveedor.php");
-        } else {
-            echo "Error al actualizar: " . $stmt->error;
+    // Manejo de la imagen como BLOB
+    if (isset($_FILES['foto']) && is_uploaded_file($_FILES['foto']['tmp_name'])) {
+        $tamano_maximo = 1048576; // 1MB
+        if ($_FILES['foto']['size'] > $tamano_maximo) {
+            echo "<script>alert('La imagen excede el tamaño máximo de 1MB.'); window.history.back();</script>";
+            exit();
         }
-    } else {
-        echo "No se detectaron cambios.";
+        
+        $foto_contenido = file_get_contents($_FILES['foto']['tmp_name']);
+        $campos_modificados[] = "foto = ?";
+        $valores[] = $foto_contenido;
+        $tipos .= 'b'; // 'b' para BLOB
     }
+
+ if (!empty($campos_modificados)) {
+    $sql = "UPDATE cancha SET " . implode(", ", $campos_modificados) . " WHERE id_cancha = ?";
+    $stmt = $conn->prepare($sql);
+    $valores[] = $id_cancha;
+    $tipos .= 's';
+
+    // Vincular parámetros
+    $stmt->bind_param($tipos, ...$valores);
+
+    // Si hay una imagen, enviarla como datos largos
+    if (isset($foto_contenido)) {
+        $stmt->send_long_data(array_search($foto_contenido, $valores), $foto_contenido);
+    }
+
+    if ($stmt->execute()) {
+        header("Location: ../vistas/vercanchasproveedor.php");
+        exit();
+    } else {
+        echo "Error al actualizar: " . $stmt->error;
+    }
+} else {
+    echo "No se detectaron cambios.";
+}
 }
 ?>
