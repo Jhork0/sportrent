@@ -1,4 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php-error.log');
+error_reporting(E_ALL);
+
 session_start();
 include 'conectar.php';
 
@@ -6,9 +12,9 @@ include 'conectar.php';
 $correo = filter_var($_POST['correoi'] ?? '', FILTER_SANITIZE_EMAIL);
 $password = trim($_POST['passwordi'] ?? '');
 
-// --- Agregando el if para verificar campos vacíos ---
+// Validar que no esté vacío
 if (empty($correo) || empty($password)) {
-    echo "<script>alert('Por favor, ingrese su correo y contraseña.'); window.history.back();</script>";
+    echo "<script>alert('Debe ingresar su correo y contraseña.'); window.history.back();</script>";
     exit();
 }
 
@@ -58,7 +64,7 @@ if ($stmtCedula->num_rows > 0) {
     $_SESSION['tipo_usuario'] = $tipo_usuario;
 
     // Paso 3: Validar contraseña
-    $sqlCred = "SELECT contraseña FROM credencial WHERE id_credencial = ?";
+    $sqlCred = "SELECT contrasena FROM credencial WHERE id_credencial = ?";
     $stmtCred = $conn->prepare($sqlCred);
     $stmtCred->bind_param("s", $id_credencial);
     $stmtCred->execute();
@@ -72,24 +78,8 @@ if ($stmtCedula->num_rows > 0) {
             header("Location: $redirectUrl");
             exit();
         } else {
-            // Mensaje de depuración detallado
-            $debugInfo = [
-                'correo_ingresado' => $correo,
-                'password_ingresada' => $password,
-                'password_hash_en_db' => $hashed_password,
-                'tipo_usuario_intentado' => $tipo_usuario,
-                'id_credencial' => $id_credencial,
-                'cedula' => $cedula
-            ];
-            
-          $debugJson = json_encode($debugInfo, JSON_PRETTY_PRINT);
-$debugJsonJsSafe = json_encode($debugJson); // Esto convierte el JSON en una cadena JS válida
-
-echo "<script>
-    alert('Contraseña incorrecta');
-    window.history.back();
-</script>";
-
+            // Mensaje sencillo para el usuario
+            echo "<script>alert('Contraseña incorrecta.'); window.history.back();</script>";
             exit();
         }
     } else {

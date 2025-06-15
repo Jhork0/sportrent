@@ -71,12 +71,15 @@ $promedio_recibido = "Sin calificaciones";
 
 // Obtener promedios de calificación para todas las canchas
 $promedios = [];
+
 $sql_promedios = "
     SELECT r.id_cancha, AVG(c.puntuacion) AS promedio
     FROM calificacion c
     JOIN reserva r ON c.id_reserva = r.id_reserva
+    WHERE c.cedula_calificador NOT IN (SELECT cedula_propietario FROM proveedor)
     GROUP BY r.id_cancha
 ";
+
 $result_promedios = $conn->query($sql_promedios);
 if ($result_promedios) {
     while ($row = $result_promedios->fetch_assoc()) {
@@ -88,13 +91,12 @@ if ($result_promedios) {
 if (isset($_SESSION['cedula_usuario'])) {
     $cedula_usuario = $_SESSION['cedula_usuario'];
 
-    $sql = "
-        SELECT AVG(c.puntuacion) AS promedio
-        FROM calificacion c
-        JOIN reserva r ON c.id_reserva = r.id_reserva
-        WHERE r.cedula_persona = ?
-    ";
-
+    $sql = "SELECT AVG(c.puntuacion) AS promedio
+            FROM calificacion c
+            JOIN reserva r ON c.id_reserva = r.id_reserva
+            WHERE r.cedula_persona = ?
+              AND c.cedula_calificador IN (SELECT cedula_propietario FROM proveedor)";
+    
     $stmt = $conn->prepare($sql);
     if ($stmt) {
         $stmt->bind_param("s", $cedula_usuario);
@@ -102,9 +104,9 @@ if (isset($_SESSION['cedula_usuario'])) {
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            if (!is_null($row['promedio'])) {
-                $promedio_recibido = number_format($row['promedio'], 1) . " ⭐";
-            }
+            $promedio_recibido = !is_null($row['promedio']) ? 
+                                 number_format($row['promedio'], 1) . " ⭐" : 
+                                 "Sin calificaciones";
         }
         $stmt->close();
     }

@@ -11,7 +11,7 @@ include '../logica/conectar.php';
 $cedula_propietario = $_SESSION['cedula_usuario'];
 
 try {
-    $query = "SELECT p.*, pr.tipo_documento, c.usuario, c.contraseña 
+    $query = "SELECT p.*, pr.tipo_documento, c.usuario, c.contrasena 
               FROM persona p
               JOIN proveedor pr ON p.cedula_persona = pr.cedula_propietario
               JOIN credencial c ON pr.id_credencial = c.id_credencial

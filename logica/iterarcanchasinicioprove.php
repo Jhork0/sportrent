@@ -75,8 +75,10 @@ $sql_promedios = "
     SELECT r.id_cancha, AVG(c.puntuacion) AS promedio
     FROM calificacion c
     JOIN reserva r ON c.id_reserva = r.id_reserva
+    WHERE c.cedula_calificador NOT IN (SELECT cedula_propietario FROM proveedor)
     GROUP BY r.id_cancha
 ";
+
 $result_promedios = $conn->query($sql_promedios);
 if ($result_promedios) {
     while ($row = $result_promedios->fetch_assoc()) {

@@ -13,7 +13,7 @@ if (!isset($_SESSION['cedula_usuario']) || $_SESSION['tipo_usuario'] != 'cliente
 $cedula_cliente = $_SESSION['cedula_usuario'];
 
 try {
-    $query = "SELECT p.*, c.usuario, c.contraseña 
+    $query = "SELECT p.*, c.usuario, c.contrasena 
               FROM persona p
               JOIN usuario u ON p.cedula_persona = u.cedula_persona
               JOIN credencial c ON u.id_credencial = c.id_credencial

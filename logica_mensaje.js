@@ -34,10 +34,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(() => {
                         toast.classList.add("hidden");
                         toast.classList.remove("opacity-100");
-                        window.location.reload();
+                        window.location.href = "../vistas/vista_reservas.php";
                     }, 1000);
                 } else {
-                    alert("Error al registrar la reserva: " + response);
+                    alert(response);
                 }
             })
             .catch(error => {

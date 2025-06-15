@@ -15,18 +15,24 @@ $stmt = $conn->prepare("SELECT correo FROM persona WHERE cedula_persona=?");
 $stmt->bind_param("s", $cedula);
 $stmt->execute();
 $stmt->bind_result($correo);
-if (!$stmt->fetch()) { echo json_encode(['error'=>'Cédula no existe']); exit; }
+if (!$stmt->fetch()) { 
+    echo json_encode(['error'=>'Cédula no existe']); 
+    exit; 
+}
 $stmt->close();
 
-// 2. Buscar id_credencial en usuario
-$stmt = $conn->prepare("SELECT id_credencial FROM usuario WHERE cedula_persona=?");
-$stmt->bind_param("s", $cedula);
+// 2. Buscar id_credencial en credencial usando el correo como usuario
+$stmt = $conn->prepare("SELECT id_credencial FROM credencial WHERE usuario=?");
+$stmt->bind_param("s", $correo);
 $stmt->execute();
 $stmt->bind_result($id_credencial);
-if (!$stmt->fetch()) { echo json_encode(['error'=>'No se encontró credencial para esta persona']); exit; }
+if (!$stmt->fetch()) { 
+    echo json_encode(['error'=>'No se encontró credencial para este correo']); 
+    exit; 
+}
 $stmt->close();
 
-// 3. Generar codigo y expiración
+// 3. Generar código y expiración
 $codigo = rand(100000, 999999);
 $expira = date('Y-m-d H:i:s', strtotime('+15 minutes'));
 

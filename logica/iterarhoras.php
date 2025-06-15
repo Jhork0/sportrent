@@ -22,8 +22,12 @@ echo '</div>';
 $fecha_seleccionada = date('Y-m-d'); 
 
 // Consultar las reservas existentes para esta cancha en la fecha seleccionada
-$query_reservas = "SELECT hora_inicio, hora_final FROM reserva 
-                    WHERE id_cancha = ? AND fecha_reserva = ? AND estado != 'cancelada' AND estado != 'completada' AND estado != 'caducada'    ";
+$query_reservas = "SELECT hora_inicio, hora_final 
+FROM reserva 
+WHERE id_cancha = ? 
+  AND fecha_reserva = ? 
+  AND estado NOT IN ('cancelada', 'completada', 'caducada' , 'confirmada' , 'transaccion' , 'pendiente')
+  ";
 $stmt_reservas = $conn->prepare($query_reservas);
 $stmt_reservas->bind_param("ss", $id_cancha, $fecha_seleccionada);
 $stmt_reservas->execute();

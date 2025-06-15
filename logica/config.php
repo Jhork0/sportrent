@@ -1,8 +1,8 @@
 <?php
-$DB_HOST = 'localhost';
-$DB_USER = 'root';
-$DB_PASS = '';
-$DB_NAME = 'sportrent2';
+$DB_HOST = 'sql211.byethost31.com';          // Host para MySQL
+$DB_USER = 'b31_39215483';                   // Usuario MySQL
+$DB_PASS = '123456789100n';        // Contraseña: es la misma que usas para entrar al vPanel
+$DB_NAME = 'b31_39215483_sportsRent';       
 
 function conectar() {
     global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;

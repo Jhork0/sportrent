@@ -2,6 +2,11 @@
 include '../logica/conectar.php';
 
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php-error.log');
+error_reporting(E_ALL);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['correo'] = $_POST['correo'] ?? '';
@@ -102,7 +107,7 @@ $stmt1->bind_param("ssssssss", $cedula, $datosNombre['primer_nombre'], $datosNom
 
 if ($stmt1->execute()) {
     // Insertar en credencial
-    $sql2 = "INSERT INTO credencial (id_credencial, usuario, contraseña) VALUES (?, ?, ?)";
+    $sql2 = "INSERT INTO credencial (id_credencial, usuario, contrasena) VALUES (?, ?, ?)";
     $stmt2 = $conn->prepare($sql2);
     $stmt2->bind_param("sss", $credencial, $correo_electronico, $password);
 
