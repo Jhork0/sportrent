@@ -19,12 +19,25 @@ $error_message = '';
 // Obtener estados filtrados desde el formulario (GET)
 $estados_filtrados = $_GET['estado'] ?? [];
 
-// Base SQL
-$sql = "SELECT r.id_reserva, r.fecha_reserva, r.hora_inicio, r.hora_final, r.estado, 
-               r.cedula_persona, a.cod_cancha, c.puntuacion, c.comentario, 
-               COALESCE(u.promedio_usuario, 0) AS promedio_usuario_calificacion
+
+$sql = "SELECT 
+            r.id_reserva, 
+            r.fecha_reserva, 
+            r.hora_inicio, 
+            r.hora_final, 
+            r.estado, 
+            r.cedula_persona, 
+            a.cod_cancha, 
+            c.puntuacion, 
+            c.comentario, 
+            can.nombre_cancha,
+            p.primer_nombre,
+            p.primer_apellido,
+            COALESCE(u.promedio_usuario, 0) AS promedio_usuario_calificacion
         FROM reserva r
         JOIN administra a ON r.id_cancha = a.cod_cancha
+        JOIN cancha can ON can.id_cancha = a.cod_cancha
+        JOIN persona p ON p.cedula_persona = r.cedula_persona
         LEFT JOIN calificacion c ON r.id_reserva = c.id_reserva
         LEFT JOIN (
             SELECT res.cedula_persona, AVG(cal.puntuacion) AS promedio_usuario
@@ -33,6 +46,7 @@ $sql = "SELECT r.id_reserva, r.fecha_reserva, r.hora_inicio, r.hora_final, r.est
             GROUP BY res.cedula_persona
         ) u ON r.cedula_persona = u.cedula_persona
         WHERE a.cedula_propietario = ?";
+
 
 // Si hay filtros, agregamos condición
 $params = [$cedula_propietario];

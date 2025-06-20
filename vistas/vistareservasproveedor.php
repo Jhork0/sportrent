@@ -66,28 +66,16 @@
             </div>
         <?php elseif (!empty($reservas)): ?>
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <?php foreach ($reservas as $fila): ?>
+                <?php
 
-                
+
+                foreach ($reservas as $fila):
+                ?>
                     <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
                         <h2 class="text-2xl font-semibold text-gray-800 mb-2">
                         </h2>
                         <div class="space-y-2 mb-4">
-                            
-                                 <h2 class="text-2xl font-semibold text-gray-800 mb-2">
-                    Cancha: <?php echo htmlspecialchars($fila['nombre_cancha']); ?>
-                </h2>
-                <p class="text-gray-600">
-                        <span class="font-medium">Cliente:</span>
-                        <?php echo htmlspecialchars($fila['primer_nombre']); ?>
-                        <?php echo htmlspecialchars($fila['primer_apellido']); ?>
-                    </p>
-                  <p class="text-gray-600">
-    <span class="font-medium">Calificación</span>
-    <?php echo number_format($fila['promedio_usuario_calificacion'], 2); ?>
-</p>
-
-                <p class="text-gray-600">
+                            <p class="text-gray-600">
                                 <span class="font-medium">Fecha:</span>
                                 <?php echo date('d/m/Y', strtotime($fila['fecha_reserva'])); ?>
                             </p>
@@ -98,7 +86,7 @@
                              <p class="text-gray-600">
                              <span class="font-medium">Estado:</span> 
                                 <span class="px-2 py-1 rounded-full text-xs font-semibold 
-                                   <?php echo $fila['estado'] === 'confirmada' ? 'bg-green-100 text-green-800' : 
+                                    <?php echo $fila['estado'] === 'confirmada' ? 'bg-green-100 text-green-800' : 
                                            ($fila['estado'] === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :  
                                            ($fila['estado'] === 'completada' ? 'bg-blue-100 text-blue-800' :
                                            ($fila['estado'] === 'calificado' ? 'bg-pink-100 text-pink-800' :  
@@ -107,8 +95,6 @@
                                      <?php echo ucfirst(htmlspecialchars($fila['estado'])); 
                                         
                                      ?>
-                                        
-                                  
                     
                                  </span>
                                
@@ -130,6 +116,21 @@
                         <?php endif; ?>
                             </p>
                     <?php endif; ?>
+
+
+
+                 
+                           <p class="text-gray-600">
+
+                        <span class="font-medium">Promedio de estrellas del usuario</span>
+                          <?php if ($fila['promedio_usuario_calificacion'] !== 'N/A'): ?>
+                        <?php echo number_format((float)$fila['promedio_usuario_calificacion'], 2, '.', ''); ?>
+                        <?php endif; ?>
+                            </p>
+                
+                
+
+                          
                              
                         </div>
 
@@ -169,22 +170,33 @@
                             </form>
                         <?php endif; ?>
 
-                        <?php $ya_calificada = !empty($fila['calificada']);?>
-                                
+                        <?php
+$id_reserva = $fila['id_reserva'];
+$ya_calificada = false;
 
-                                                        
+$check_sql = "SELECT 1 FROM calificacion WHERE id_reserva = ?";
+$check_stmt = $conn->prepare($check_sql);
+$check_stmt->bind_param("s", $id_reserva);
+$check_stmt->execute();
+$check_stmt->store_result();
+
+if ($check_stmt->num_rows > 0) {
+    $ya_calificada = true;
+}
+
+$check_stmt->close();
+?>
 
 
-            <?php if (($fila['estado'] === 'finalizada' || $fila['estado'] === 'calificado') && !$ya_calificada): ?>
+                  <?php if (($fila['estado'] === 'finalizada' || $fila['estado'] === 'calificado') && !$ya_calificada): ?>
     <form action="../vistas/vista_calificaracliente.php" method="post" class="mt-4">
-        <input type="hidden" name="id_reserva" value="<?php echo $fila['id_reserva']; ?>">
+        <input type="hidden" name="id_reserva" value="<?php echo $id_reserva; ?>">
         <button type="submit" 
                 class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors">
             Calificar usuario
         </button>
     </form>
 <?php endif; ?>
-
 
                     </div>
                 <?php endforeach; ?>

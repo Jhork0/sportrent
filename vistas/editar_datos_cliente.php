@@ -63,11 +63,9 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-                      
-                        <span class="mt-1 block w-full bg-gray-100 text-gray-800 px-3 py-2 rounded-lg shadow-sm">
-                            <?php echo htmlspecialchars($cliente['correo'] ?? ''); ?>
-                        </span>
-
+                        <input type="email" name="correo" required 
+                               value="<?php echo htmlspecialchars($cliente['correo'] ?? ''); ?>" 
+                               class="mt-1 block w-full bg-gray-100 border-gray-100 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Teléfono</label>

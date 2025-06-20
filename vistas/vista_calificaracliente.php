@@ -19,7 +19,7 @@ $id_reserva = $_POST['id_reserva'];
     <div class="bg-white p-8 rounded shadow-md w-full max-w-lg">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">Calificar al Usuario</h1>
 
-        <form id="calificacionForm" action="../logica/guardarcalificacion.php" method="post" class="space-y-4">
+        <form action="../logica/guardarcalificacion.php" method="post" class="space-y-4">
             <input type="hidden" name="id_reserva" value="<?php echo htmlspecialchars($id_reserva); ?>">
 
             <div>
@@ -35,7 +35,6 @@ $id_reserva = $_POST['id_reserva'];
             <div>
                 <label for="comentario" class="block text-gray-700 font-medium mb-2">Comentario:</label>
                 <textarea name="comentario" id="comentario" rows="4" class="w-full border rounded px-3 py-2" placeholder="Escribe tu opinión..."></textarea>
-                <p id="errorMsg" class="text-red-600 mt-2 hidden"></p>
             </div>
 
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
@@ -44,34 +43,5 @@ $id_reserva = $_POST['id_reserva'];
         </form>
     </div>
 
-    <script>
-    // Lista de palabras prohibidas (puedes agregar/quitar las que consideres)
-    const palabrasProhibidas = [
-        "tonto", "idiota", "estúpido", "imbécil", "malo", "grosero", "maldito", "pendejo", "cabron", "puto"
-        // Agrega más palabras según tus necesidades
-    ];
-
-    document.getElementById('calificacionForm').addEventListener('submit', function(event) {
-        const comentario = document.getElementById('comentario').value.toLowerCase();
-        let contienePalabraProhibida = false;
-
-        for (const palabra of palabrasProhibidas) {
-            // Busca la palabra prohibida como palabra completa (no como parte de otra palabra)
-            const regex = new RegExp("\\b" + palabra + "\\b", "i");
-            if (regex.test(comentario)) {
-                contienePalabraProhibida = true;
-                break;
-            }
-        }
-
-        if (contienePalabraProhibida) {
-            event.preventDefault();
-            document.getElementById('errorMsg').textContent = "Tu comentario contiene palabras no permitidas. Por favor, modifícalo.";
-            document.getElementById('errorMsg').classList.remove('hidden');
-        } else {
-            document.getElementById('errorMsg').classList.add('hidden');
-        }
-    });
-    </script>
 </body>
 </html>

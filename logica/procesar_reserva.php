@@ -28,22 +28,21 @@ function enviarCorreoPropietario($correo, $datos_reserva, $datos_cancha) {
         $mail->addAddress($correo);
 
         $mail->isHTML(true);
-$mail->Subject = 'Nueva reserva - ' . $datos_cancha['nombre_cancha'] . ' - Codigo: ' . $datos_reserva['id_reserva'];
-       $mail->Body = "
-    <h2>Nueva reserva recibida</h2>
-    <p>Un usuario ha realizado una reserva en su cancha. Detalles:</p>
-    <ul>
-        <li><strong>ID Reserva:</strong> {$datos_reserva['id_reserva']}</li>
-        <li><strong>Fecha reserva:</strong> {$datos_reserva['fecha_reserva']}</li>
-        <li><strong>Hora inicio:</strong> {$datos_reserva['hora_inicio']}</li>
-        <li><strong>Hora final:</strong> {$datos_reserva['hora_final']}</li>
-        <li><strong>Cancha:</strong> {$datos_cancha['nombre_cancha']}</li>
-        <li><strong>Dirección cancha:</strong> {$datos_cancha['direccion_cancha']}</li>
-    </ul>
-    <p>Por favor, gestione esta reserva desde el panel de administración.</p>
-    <p>Visite la página: <a href='https://sportrent.byethost31.com/sportrent-main/'>https://sportrent.byethost31.com/sportrent-main/</a></p>
-    <p>Atentamente,<br>Soporte de SoportRent</p>
-";
+        $mail->Subject = 'Nueva reserva en su cancha: ' . $datos_cancha['nombre_cancha'];
+        $mail->Body = "
+            <h2>Nueva reserva recibida</h2>
+            <p>Un usuario ha realizado una reserva en su cancha. Detalles:</p>
+            <ul>
+                <li><strong>ID Reserva:</strong> {$datos_reserva['id_reserva']}</li>
+                <li><strong>Fecha reserva:</strong> {$datos_reserva['fecha_reserva']}</li>
+                <li><strong>Hora inicio:</strong> {$datos_reserva['hora_inicio']}</li>
+                <li><strong>Hora final:</strong> {$datos_reserva['hora_final']}</li>
+                <li><strong>Cancha:</strong> {$datos_cancha['nombre_cancha']}</li>
+                <li><strong>Dirección cancha:</strong> {$datos_cancha['direccion_cancha']}</li>
+            </ul>
+            <p>Por favor, gestione esta reserva desde el panel de administración.</p>
+            <p>Atentamente,<br>Soporte de SoportRent</p>
+        ";
         $mail->send();
         return true;
     } catch (Exception $e) {

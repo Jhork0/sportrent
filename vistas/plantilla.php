@@ -17,10 +17,9 @@ $comentarios = [];
 // Obtener promedio de calificación
 $sql_prom = "
     SELECT AVG(c.puntuacion) AS promedio
-FROM calificacion c
-JOIN reserva r ON c.id_reserva = r.id_reserva
-WHERE r.id_cancha = ?
-  AND c.cedula_calificador NOT IN (SELECT cedula_propietario FROM proveedor)
+    FROM calificacion c
+    JOIN reserva r ON c.id_reserva = r.id_reserva
+    WHERE r.id_cancha = ?
 ";
 
 $stmt = $conn->prepare($sql_prom);
@@ -42,11 +41,9 @@ $sql_com = "
     JOIN reserva r ON c.id_reserva = r.id_reserva
     JOIN persona p ON r.cedula_persona = p.cedula_persona
     WHERE r.id_cancha = ?
-      AND c.cedula_calificador NOT IN (SELECT cedula_propietario FROM proveedor)
     ORDER BY c.fecha DESC
     LIMIT 5
 ";
-
 $stmt2 = $conn->prepare($sql_com);
 $stmt2->bind_param("s", $id_cancha);
 $stmt2->execute();

@@ -3,9 +3,13 @@ include 'conectar.php';
 session_start();
 
 // Validar sesión y tipo de usuario
-if (!isset($_SESSION['correo_usuario']) || !isset($_SESSION['tipo_usuario']) ||  $_SESSION['tipo_usuario'] !== 'proveedor') {
-    header("Location: ../index.php");
+if(!isset($_SESSION['correo_usuario']) || !isset($_SESSION['tipo_usuario']) || $_SESSION['tipo_usuario'] !== 'proveedor') {
+    echo "No se recibió ningún correo";
     exit();
+}
+
+if ($_SESSION['tipo_usuario'] === 'cliente') {
+     header("Location: ../index.php");
 }
 
 $correo = $_SESSION['correo_usuario'];
@@ -13,22 +17,11 @@ $cedula = $_SESSION['cedula_usuario'] ?? null;
 
 // Consulta SQL con JOIN entre administra y cancha
 $sql = "
-    SELECT 
-        c.*, 
-        COALESCE(avg_cal.promedio, 0) AS promedio_calificacion
+    SELECT c.*
     FROM administra a
     INNER JOIN cancha c ON a.cod_cancha = c.id_cancha
-    LEFT JOIN (
-        SELECT r.id_cancha, AVG(cal.puntuacion) AS promedio
-        FROM calificacion cal
-        INNER JOIN reserva r ON cal.id_reserva = r.id_reserva
-        WHERE cal.cedula_calificador NOT IN (SELECT cedula_propietario FROM proveedor)
-        GROUP BY r.id_cancha
-    ) avg_cal ON avg_cal.id_cancha = c.id_cancha
     WHERE a.cedula_propietario = ?
 ";
-
-
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $cedula);
 $stmt->execute();
@@ -68,12 +61,8 @@ $resultado = $stmt->get_result();
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="badge badge-primary">$<?php echo $valor; ?>/hora</span>
                             <span class="badge badge-secondary"><?php echo $tipo; ?></span>
-                              
                         </div>
-                        <span class="badge badge-info">Calificación: <?php echo $promedio; ?></span>
                     </div>
-  
-
                     <div class="card-footer bg-transparent">
                         <a href="#" class="btn btn-danger btn-sm mb-2" onclick="eliminarCancha('<?php echo $id; ?>', this)">Eliminar</a>
                         <a href="../vistas/interfazedicion.php?id=<?php echo $id; ?>" class="btn btn-warning btn-sm mb-2">Editar</a>
@@ -91,8 +80,6 @@ $resultado = $stmt->get_result();
         ?>
     </div>
 </div>
-
-
 
 <?php
 $stmt->close();

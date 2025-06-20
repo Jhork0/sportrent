@@ -1,0 +1,6 @@
+[14-Jun-2025 17:55:18 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder in C:\xampp\htdocs\sportrent-main\logica\conectar.php:7
+Stack trace:
+#0 C:\xampp\htdocs\sportrent-main\logica\conectar.php(7): mysqli->__construct('sql211.byethost...', 'b31_39215483', Object(SensitiveParameterValue), 'b31_39215483_sp...')
+#1 C:\xampp\htdocs\sportrent-main\logica\iniciosesion.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\sportrent-main\logica\conectar.php on line 7
